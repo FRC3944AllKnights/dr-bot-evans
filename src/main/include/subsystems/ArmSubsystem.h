@@ -20,7 +20,29 @@ class ArmSubsystem : public frc2::SubsystemBase {
   void moveFirstJoint(double motor_power);
   void moveSecondJoint(double motor_power);
 
+  //sets cube vs cone mode
+  void setMode();
+
+  //position presets
+  void homePosition();
+  void floorPickupPosition();
+  void chutePickupPosition();
+  void trayPickupPosition();
+  void bottomDropPosition();
+  void midDropPosition();
+  void highDropPosition();
+
  private:
-    rev::CANSparkMax first_joint_motor{1, rev::CANSparkMax::MotorType::kBrushless};
-    rev::CANSparkMax second_joint_motor{2, rev::CANSparkMax::MotorType::kBrushless};
+    bool isConeMode = true;
+    double shoulderGearRatio = 36;
+    double elbowGearRatio = 25*3;
+
+    rev::CANSparkMax shoulder_motor{1, rev::CANSparkMax::MotorType::kBrushless};
+    rev::SparkMaxPIDController shoulder_pidController = shoulder_motor.GetPIDController();
+    rev::SparkMaxRelativeEncoder shoulder_encoder = shoulder_motor.GetEncoder();
+
+    rev::CANSparkMax elbow_motor{2, rev::CANSparkMax::MotorType::kBrushless};
+    rev::SparkMaxPIDController elbow_pidController = elbow_motor.GetPIDController();
+    rev::SparkMaxRelativeEncoder elbow_encoder = elbow_motor.GetEncoder();
+
 };

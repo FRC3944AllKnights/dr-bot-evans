@@ -139,3 +139,33 @@ namespace OIConstants {
 constexpr int kDriverControllerPort = 0;
 constexpr double kDriveDeadband = 0.05;
 }  // namespace OIConstants
+
+namespace ArmConstants {
+//shoulder pid constants
+constexpr double shoulderP = 5e-5;
+constexpr double shoulderI = 1e-6;
+constexpr double shoulderD = 0;
+constexpr double shoulderFF = 0.000156;
+constexpr double shoulderMinOutput = -1;
+constexpr double shoulderMaxOutput = 1;
+
+//shoulder smartMotion constants
+constexpr double shoulderMaxVel = 2000;
+constexpr double shoulderminVel = 0;
+constexpr double shoulderMaxAcc = 1500;
+constexpr double shoulderAllErr = 0;
+
+//elbow pid constants
+constexpr double elbowP = 5e-5;
+constexpr double elbowI = 1e-6;
+constexpr double elbowD = 0;
+constexpr double elbowFF = 0.000156;
+constexpr double elbowMinOutput = -1;
+constexpr double elbowMaxOutput = 1;
+
+//elbow smartMotion constants
+constexpr double elbowMaxVel = 2000;
+constexpr double elbowminVel = 0;
+constexpr double elbowMaxAcc = 1500;
+constexpr double elbowAllErr = 0;
+}
