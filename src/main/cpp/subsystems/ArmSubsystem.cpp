@@ -26,14 +26,6 @@ void ArmSubsystem::init(){
     elbow_pidController.SetSmartMotionAllowedClosedLoopError(elbowAllErr);
 }
 
-void ArmSubsystem::moveFirstJoint(double motor_power){
-    shoulder_motor.Set(motor_power);
-}
-
-void ArmSubsystem::moveSecondJoint(double motor_power){
-    elbow_motor.Set(motor_power);
-}
-
 void ArmSubsystem::homePosition(){
     shoulder_pidController.SetReference(0, rev::CANSparkMax::ControlType::kSmartMotion);
     elbow_pidController.SetReference(0, rev::CANSparkMax::ControlType::kSmartMotion);

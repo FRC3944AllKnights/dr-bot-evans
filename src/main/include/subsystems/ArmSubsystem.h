@@ -17,8 +17,6 @@ class ArmSubsystem : public frc2::SubsystemBase {
    */
 
   void init();
-  void moveFirstJoint(double motor_power);
-  void moveSecondJoint(double motor_power);
 
   //sets cube vs cone mode
   void setMode();

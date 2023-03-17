@@ -52,7 +52,7 @@ RobotContainer::RobotContainer() {
         m_arm.moveSecondJoint(m_driverController.GetRightTriggerAxis());
       },
 
-      {&m_arm}));    
+      {&m_arm}));
 }
 
 void RobotContainer::ConfigureButtonBindings() {
