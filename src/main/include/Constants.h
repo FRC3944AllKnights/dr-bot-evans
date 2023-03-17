@@ -151,7 +151,7 @@ constexpr double shoulderMaxOutput = 1;
 
 //shoulder smartMotion constants
 constexpr double shoulderMaxVel = 2000;
-constexpr double shoulderminVel = 0;
+constexpr double shoulderMinVel = 0;
 constexpr double shoulderMaxAcc = 1500;
 constexpr double shoulderAllErr = 0;
 
@@ -165,7 +165,7 @@ constexpr double elbowMaxOutput = 1;
 
 //elbow smartMotion constants
 constexpr double elbowMaxVel = 2000;
-constexpr double elbowminVel = 0;
+constexpr double elbowMinVel = 0;
 constexpr double elbowMaxAcc = 1500;
 constexpr double elbowAllErr = 0;
 }

@@ -45,14 +45,6 @@ RobotContainer::RobotContainer() {
             true, true);
       },
       {&m_drive}));
-
-  m_arm.SetDefaultCommand(frc2::RunCommand(
-      [this] {
-        m_arm.moveFirstJoint(m_driverController.GetLeftTriggerAxis());
-        m_arm.moveSecondJoint(m_driverController.GetRightTriggerAxis());
-      },
-
-      {&m_arm}));
 }
 
 void RobotContainer::ConfigureButtonBindings() {

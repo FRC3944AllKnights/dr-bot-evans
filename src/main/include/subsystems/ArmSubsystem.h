@@ -19,16 +19,17 @@ class ArmSubsystem : public frc2::SubsystemBase {
   void init();
 
   //sets cube vs cone mode
-  void setMode();
-
+  void setCone(); //LB
+  void setCube(); //RB
+  
   //position presets
   void homePosition();
-  void floorPickupPosition();
-  void chutePickupPosition();
-  void trayPickupPosition();
-  void bottomDropPosition();
-  void midDropPosition();
-  void highDropPosition();
+  void floorPickupPosition(); //↓
+  void chutePickupPosition(); //←
+  void trayPickupPosition(); //↑
+  void bottomDropPosition(); //A
+  void midDropPosition(); //X
+  void highDropPosition(); //Y
 
  private:
     bool isConeMode = true;
