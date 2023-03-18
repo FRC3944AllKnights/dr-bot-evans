@@ -16,6 +16,7 @@
 #include <units/angle.h>
 #include <units/velocity.h>
 
+
 #include <utility>
 
 #include "Constants.h"
@@ -48,9 +49,35 @@ RobotContainer::RobotContainer() {
 }
 
 void RobotContainer::ConfigureButtonBindings() {
-  frc2::JoystickButton(&m_driverController,
-                       frc::XboxController::Button::kRightBumper)
-      .WhileTrue(new frc2::RunCommand([this] { m_drive.SetX(); }, {&m_drive}));
+    frc2::JoystickButton(&m_driverController, frc::XboxController::Button::kStart).OnTrue(
+        new frc2::InstantCommand([this] { m_drive.SetX(); }, {&m_drive})
+    );
+
+    //arm drop positions
+    frc2::JoystickButton(&m_driverController, frc::XboxController::Button::kA).OnTrue(
+        new frc2::RunCommand([this] {m_arm.bottomDropPosition(); }, {&m_arm})
+    );
+
+    frc2::JoystickButton(&m_driverController, frc::XboxController::Button::kX).OnTrue(
+        new frc2::RunCommand([this] {m_arm.midDropPosition(); }, {&m_arm})
+    );
+
+    frc2::JoystickButton(&m_driverController, frc::XboxController::Button::kY).OnTrue(
+        new frc2::RunCommand([this] {m_arm.highDropPosition(); }, {&m_arm})
+    );
+
+    //arm pickup positions
+    frc::POVButton(&m_driverController, 0).OnTrue(
+        new frc2::RunCommand([this] {m_arm.trayPickupPosition(); }, {&m_arm})
+    );
+
+    frc::POVButton(&m_driverController, 270).OnTrue(
+        new frc2::RunCommand([this] {m_arm.chutePickupPosition(); }, {&m_arm})
+    );
+
+    frc::POVButton(&m_driverController, 180).OnTrue(
+        new frc2::RunCommand([this] {m_arm.floorPickupPosition(); }, {&m_arm})
+    );
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

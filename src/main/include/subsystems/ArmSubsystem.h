@@ -33,8 +33,8 @@ class ArmSubsystem : public frc2::SubsystemBase {
 
  private:
     bool isConeMode = true;
-    double shoulderGearRatio = 36;
-    double elbowGearRatio = 25*3;
+    double shoulderGearRatio = -36/360;
+    double elbowGearRatio = -25*60/16/360;
 
     rev::CANSparkMax shoulder_motor{1, rev::CANSparkMax::MotorType::kBrushless};
     rev::SparkMaxPIDController shoulder_pidController = shoulder_motor.GetPIDController();
