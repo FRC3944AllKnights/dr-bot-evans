@@ -143,7 +143,7 @@ constexpr double kDriveDeadband = 0.05;
 namespace ArmConstants {
 //shoulder pid constants
 constexpr double shoulderP = 5e-5;
-constexpr double shoulderI = 1e-6;
+constexpr double shoulderI = 5e-7;
 constexpr double shoulderD = 0;
 constexpr double shoulderFF = 0.000156;
 constexpr double shoulderMinOutput = -1;
@@ -164,8 +164,8 @@ constexpr double elbowMinOutput = -1;
 constexpr double elbowMaxOutput = 1;
 
 //elbow smartMotion constants
-constexpr double elbowMaxVel = 2000;
+constexpr double elbowMaxVel = 4000;
 constexpr double elbowMinVel = 0;
-constexpr double elbowMaxAcc = 1500;
+constexpr double elbowMaxAcc = 2000;
 constexpr double elbowAllErr = 0;
 }
