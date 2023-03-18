@@ -28,66 +28,75 @@ void ArmSubsystem::init(){
     elbow_pidController.SetSmartMotionAllowedClosedLoopError(elbowAllErr);
 }
 
+void ArmSubsystem::setCone(){
+    isConeMode = true;
+}
+
+void ArmSubsystem::setCube(){
+    isConeMode = false;
+}
+    
+
 void ArmSubsystem::homePosition(){
     shoulder_pidController.SetReference(0, rev::CANSparkMax::ControlType::kSmartMotion);
-    elbow_pidController.SetReference(0, rev::CANSparkMax::ControlType::kSmartMotion);
+    elbow_pidController.SetReference(-1, rev::CANSparkMax::ControlType::kSmartMotion);
 };
 
 void ArmSubsystem::floorPickupPosition(){
     if(isConeMode){
-        shoulder_pidController.SetReference(shoulderGearRatio*90, rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference(elbowGearRatio*5, rev::CANSparkMax::ControlType::kSmartMotion);
+        shoulder_pidController.SetReference(shoulderGearRatio*5, rev::CANSparkMax::ControlType::kSmartMotion);
+        elbow_pidController.SetReference(elbowGearRatio*90, rev::CANSparkMax::ControlType::kSmartMotion);
     } else{
-        shoulder_pidController.SetReference(shoulderGearRatio*95, rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference(elbowGearRatio*5, rev::CANSparkMax::ControlType::kSmartMotion);
+        shoulder_pidController.SetReference(shoulderGearRatio*5, rev::CANSparkMax::ControlType::kSmartMotion);
+        elbow_pidController.SetReference(elbowGearRatio*95, rev::CANSparkMax::ControlType::kSmartMotion);
     }
 };
 
 void ArmSubsystem::chutePickupPosition(){
     if(isConeMode){
-        shoulder_pidController.SetReference(shoulderGearRatio*0.2, rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference(elbowGearRatio*0.2, rev::CANSparkMax::ControlType::kSmartMotion);
+        shoulder_pidController.SetReference(shoulderGearRatio*25, rev::CANSparkMax::ControlType::kSmartMotion);
+        elbow_pidController.SetReference(elbowGearRatio*25, rev::CANSparkMax::ControlType::kSmartMotion);
     } else{
-        shoulder_pidController.SetReference(shoulderGearRatio*0.2, rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference(elbowGearRatio*0.5, rev::CANSparkMax::ControlType::kSmartMotion);
+        shoulder_pidController.SetReference(shoulderGearRatio*25, rev::CANSparkMax::ControlType::kSmartMotion);
+        elbow_pidController.SetReference(elbowGearRatio*25, rev::CANSparkMax::ControlType::kSmartMotion);
     }
 };
 
 void ArmSubsystem::trayPickupPosition(){
     if(isConeMode){
-        shoulder_pidController.SetReference(shoulderGearRatio*0.2, rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference(elbowGearRatio*0.2, rev::CANSparkMax::ControlType::kSmartMotion);
+        shoulder_pidController.SetReference(shoulderGearRatio*25, rev::CANSparkMax::ControlType::kSmartMotion);
+        elbow_pidController.SetReference(elbowGearRatio*25, rev::CANSparkMax::ControlType::kSmartMotion);
     } else{
-        shoulder_pidController.SetReference(shoulderGearRatio*0.2, rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference(elbowGearRatio*0.5, rev::CANSparkMax::ControlType::kSmartMotion);
+        shoulder_pidController.SetReference(shoulderGearRatio*25, rev::CANSparkMax::ControlType::kSmartMotion);
+        elbow_pidController.SetReference(elbowGearRatio*25, rev::CANSparkMax::ControlType::kSmartMotion);
     }
 };
 void ArmSubsystem::bottomDropPosition(){
     if(isConeMode){
-        shoulder_pidController.SetReference(shoulderGearRatio*0.2, rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference(elbowGearRatio*0.2, rev::CANSparkMax::ControlType::kSmartMotion);
+        shoulder_pidController.SetReference(shoulderGearRatio*25, rev::CANSparkMax::ControlType::kSmartMotion);
+        elbow_pidController.SetReference(elbowGearRatio*25, rev::CANSparkMax::ControlType::kSmartMotion);
     } else{
-        shoulder_pidController.SetReference(shoulderGearRatio*0.2, rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference(elbowGearRatio*0.5, rev::CANSparkMax::ControlType::kSmartMotion);
+        shoulder_pidController.SetReference(shoulderGearRatio*25, rev::CANSparkMax::ControlType::kSmartMotion);
+        elbow_pidController.SetReference(elbowGearRatio*25, rev::CANSparkMax::ControlType::kSmartMotion);
     }
 };
 
 void ArmSubsystem::midDropPosition(){
     if(isConeMode){
-        shoulder_pidController.SetReference(shoulderGearRatio*0.2, rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference(elbowGearRatio*0.2, rev::CANSparkMax::ControlType::kSmartMotion);
+        shoulder_pidController.SetReference(50.0*shoulderGearRatio, rev::CANSparkMax::ControlType::kSmartMotion);
+        elbow_pidController.SetReference(50*elbowGearRatio, rev::CANSparkMax::ControlType::kSmartMotion);
     } else{
-        shoulder_pidController.SetReference(shoulderGearRatio*0.2, rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference(elbowGearRatio*0.5, rev::CANSparkMax::ControlType::kSmartMotion);
+        shoulder_pidController.SetReference(50*shoulderGearRatio, rev::CANSparkMax::ControlType::kSmartMotion);
+        elbow_pidController.SetReference(-5, rev::CANSparkMax::ControlType::kSmartMotion);
     }
 };
 
 void ArmSubsystem::highDropPosition(){
     if(isConeMode){
-        shoulder_pidController.SetReference(shoulderGearRatio*0.2, rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference(elbowGearRatio*0.2, rev::CANSparkMax::ControlType::kSmartMotion);
+        shoulder_pidController.SetReference(shoulderGearRatio*25, rev::CANSparkMax::ControlType::kSmartMotion);
+        elbow_pidController.SetReference(elbowGearRatio*25, rev::CANSparkMax::ControlType::kSmartMotion);
     } else{
-        shoulder_pidController.SetReference(shoulderGearRatio*0.2, rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference(elbowGearRatio*0.5, rev::CANSparkMax::ControlType::kSmartMotion);
+        shoulder_pidController.SetReference(shoulderGearRatio*25, rev::CANSparkMax::ControlType::kSmartMotion);
+        elbow_pidController.SetReference(elbowGearRatio*25, rev::CANSparkMax::ControlType::kSmartMotion);
     }
 };

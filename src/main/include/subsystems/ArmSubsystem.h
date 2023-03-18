@@ -23,7 +23,7 @@ class ArmSubsystem : public frc2::SubsystemBase {
   void setCube(); //RB
   
   //position presets
-  void homePosition();
+  void homePosition(); //→
   void floorPickupPosition(); //↓
   void chutePickupPosition(); //←
   void trayPickupPosition(); //↑
