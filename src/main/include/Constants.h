@@ -30,15 +30,15 @@ namespace DriveConstants {
 constexpr units::meters_per_second_t kMaxSpeed = 4.8_mps;
 constexpr units::radians_per_second_t kMaxAngularSpeed{2 * std::numbers::pi};
 
-constexpr double kDirectionSlewRate = 1.2;   // radians per second
-constexpr double kMagnitudeSlewRate = 1.8;   // percent per second (1 = 100%)
-constexpr double kRotationalSlewRate = 2.0;  // percent per second (1 = 100%)
+constexpr double kDirectionSlewRate = 0.6;   // radians per second
+constexpr double kMagnitudeSlewRate = 1.2;   // percent per second (1 = 100%)
+constexpr double kRotationalSlewRate = 1.0;  // percent per second (1 = 100%)
 
 // Chassis configuration
 constexpr units::meter_t kTrackWidth =
-    0.6731_m;  // Distance between centers of right and left wheels on robot
+    0.546_m;  // Distance between centers of right and left wheels on robot
 constexpr units::meter_t kWheelBase =
-    0.6731_m;  // Distance between centers of front and back wheels on robot
+    0.546_m;  // Distance between centers of front and back wheels on robot
 
 // Angular offsets of the modules relative to the chassis in radians
 constexpr double kFrontLeftChassisAngularOffset = -std::numbers::pi / 2;
@@ -66,7 +66,7 @@ constexpr bool kTurningEncoderInverted = true;
 // The MAXSwerve module can be configured with one of three pinion gears: 12T,
 // 13T, or 14T. This changes the drive speed of the module (a pinion gear with
 // more teeth will result in a robot that drives faster).
-constexpr int kDrivingMotorPinionTeeth = 14;
+constexpr int kDrivingMotorPinionTeeth = 13;
 
 // Calculations required for driving motor conversion factors and feed forward
 constexpr double kDrivingMotorFreeSpeedRps =
