@@ -157,8 +157,8 @@ constexpr double shoulderAllErr = 0;
 
 //elbow pid constants
 constexpr double elbowP = 5e-5;
-constexpr double elbowI = 1e-6;
-constexpr double elbowD = 0;
+constexpr double elbowI = 1e-7;
+constexpr double elbowD = 0.0;
 constexpr double elbowFF = 0.000156;
 constexpr double elbowMinOutput = -1;
 constexpr double elbowMaxOutput = 1;

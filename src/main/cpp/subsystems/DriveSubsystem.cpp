@@ -12,6 +12,8 @@
 #include "Constants.h"
 #include "utils/SwerveUtils.h"
 
+#include <frc/SmartDashboard/SmartDashboard.h>
+
 using namespace DriveConstants;
 
 DriveSubsystem::DriveSubsystem()
@@ -24,14 +26,14 @@ DriveSubsystem::DriveSubsystem()
       m_rearRight{kRearRightDrivingCanId, kRearRightTurningCanId,
                   kRearRightChassisAngularOffset},
       m_odometry{kDriveKinematics,
-                 frc::Rotation2d(units::radian_t{-ahrs.GetAngle()}),
+                 frc::Rotation2d(units::degree_t{-ahrs.GetAngle()}),
                  {m_frontLeft.GetPosition(), m_frontRight.GetPosition(),
                   m_rearLeft.GetPosition(), m_rearRight.GetPosition()},
                  frc::Pose2d{}} {}
 
 void DriveSubsystem::Periodic() {
   // Implementation of subsystem periodic method goes here.
-  m_odometry.Update(frc::Rotation2d(units::radian_t{-ahrs.GetAngle()}),
+  m_odometry.Update(frc::Rotation2d(units::degree_t{-ahrs.GetAngle()}),
                     {m_frontLeft.GetPosition(), m_rearLeft.GetPosition(),
                      m_frontRight.GetPosition(), m_rearRight.GetPosition()});
 }
@@ -40,14 +42,20 @@ void DriveSubsystem::Drive(units::meters_per_second_t xSpeed,
                            units::meters_per_second_t ySpeed,
                            units::radians_per_second_t rot, bool fieldRelative,
                            bool rateLimit) {
+  double xSpeedVal = xSpeed.value()*0.1;
+  double ySpeedVal = ySpeed.value()*0.1;
+
   double xSpeedCommanded;
   double ySpeedCommanded;
 
+  frc::SmartDashboard::PutNumber("gyro heading", -ahrs.GetAngle());
+  frc::SmartDashboard::PutNumber("gyro rate", -ahrs.GetRate());
+
   if (rateLimit) {
     // Convert XY to polar for rate limiting
-    double inputTranslationDir = atan2(ySpeed.value(), xSpeed.value());
+    double inputTranslationDir = atan2(ySpeedVal, xSpeedVal);
     double inputTranslationMag =
-        sqrt(pow(xSpeed.value(), 2) + pow(ySpeed.value(), 2));
+        sqrt(pow(xSpeedVal, 2) + pow(ySpeedVal, 2));
 
     // Calculate the direction slew rate based on an estimate of the lateral
     // acceleration
@@ -93,8 +101,8 @@ void DriveSubsystem::Drive(units::meters_per_second_t xSpeed,
     m_currentRotation = m_rotLimiter.Calculate(rot.value());
 
   } else {
-    xSpeedCommanded = xSpeed.value();
-    ySpeedCommanded = ySpeed.value();
+    xSpeedCommanded = xSpeedVal;
+    ySpeedCommanded = ySpeedVal;
     m_currentRotation = rot.value();
   }
 
@@ -110,7 +118,7 @@ void DriveSubsystem::Drive(units::meters_per_second_t xSpeed,
       fieldRelative
           ? frc::ChassisSpeeds::FromFieldRelativeSpeeds(
                 xSpeedDelivered, ySpeedDelivered, rotDelivered,
-                frc::Rotation2d(units::radian_t{-ahrs.GetAngle()}))
+                frc::Rotation2d(units::degree_t{-ahrs.GetAngle()}))
           : frc::ChassisSpeeds{xSpeedDelivered, ySpeedDelivered, rotDelivered});
 
   kDriveKinematics.DesaturateWheelSpeeds(&states, DriveConstants::kMaxSpeed);
@@ -152,7 +160,7 @@ void DriveSubsystem::ResetEncoders() {
 }
 
 units::degree_t DriveSubsystem::GetHeading() const {
-  return frc::Rotation2d(units::radian_t{-ahrs.GetAngle()}).Degrees();
+  return units::degree_t{-ahrs.GetAngle()};
 }
 
 void DriveSubsystem::ZeroHeading() { ahrs.Reset(); }

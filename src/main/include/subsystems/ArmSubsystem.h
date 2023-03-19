@@ -5,6 +5,7 @@
 #pragma once
 #include <rev/CANSparkMax.h>
 #include <frc2/command/SubsystemBase.h>
+#include <frc/SmartDashboard/SmartDashboard.h>
 
 #include "Constants.h"
 
@@ -30,6 +31,8 @@ class ArmSubsystem : public frc2::SubsystemBase {
   void bottomDropPosition(); //A
   void midDropPosition(); //X
   void highDropPosition(); //Y
+
+  void testArm();
 
  private:
     bool isConeMode = true;

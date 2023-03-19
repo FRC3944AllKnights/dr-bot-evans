@@ -10,6 +10,6 @@ void IntakeSubsystem::grabPlace(double LT, double RT){
         intake_motor.Set(-RT);
     }
     else{
-        intake_motor.Set(0.05);
+        intake_motor.Set(0.0);
     }
 }

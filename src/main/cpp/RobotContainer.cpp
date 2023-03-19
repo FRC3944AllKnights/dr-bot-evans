@@ -35,7 +35,7 @@ RobotContainer::RobotContainer() {
   // Set up default drive command
   // The left stick controls translation of the robot.
   // Turning is controlled by the X axis of the right stick.
-  /*m_drive.SetDefaultCommand(frc2::RunCommand(
+  m_drive.SetDefaultCommand(frc2::RunCommand(
       [this] {
         m_drive.Drive(
             -units::meters_per_second_t{frc::ApplyDeadband(
@@ -46,7 +46,7 @@ RobotContainer::RobotContainer() {
                 m_driverController.GetRightX(), OIConstants::kDriveDeadband)},
             true, true);
       },
-      {&m_drive}));*/
+      {&m_drive}));
 
     m_intake.SetDefaultCommand(frc2::RunCommand(
       [this] {
@@ -60,10 +60,13 @@ RobotContainer::RobotContainer() {
 }
 
 void RobotContainer::ConfigureButtonBindings() {
-    /*
     frc2::JoystickButton(&m_driverController, frc::XboxController::Button::kStart).OnTrue(
         new frc2::InstantCommand([this] { m_drive.SetX(); }, {&m_drive})
-    );*/
+    );
+
+    frc2::JoystickButton(&m_driverController, frc::XboxController::Button::kB).OnTrue(
+        new frc2::InstantCommand([this] { m_arm.testArm(); }, {&m_arm})
+    );
 
     frc2::JoystickButton(&m_driverController, frc::XboxController::Button::kStart).OnTrue(
         new frc2::InstantCommand([this] { m_arm.init(); }, {&m_arm})
