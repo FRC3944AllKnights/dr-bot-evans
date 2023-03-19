@@ -65,10 +65,10 @@ void ArmSubsystem::chutePickupPosition(){
 void ArmSubsystem::trayPickupPosition(){
     if(isConeMode){
         shoulder_pidController.SetReference(shoulderGearRatio*75.0, rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference(elbowGearRatio*110.0, rev::CANSparkMax::ControlType::kSmartMotion);
+        elbow_pidController.SetReference(elbowGearRatio*102.5, rev::CANSparkMax::ControlType::kSmartMotion);
     } else{
-        shoulder_pidController.SetReference(shoulderGearRatio*75.0, rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference(elbowGearRatio*125.0, rev::CANSparkMax::ControlType::kSmartMotion);
+        shoulder_pidController.SetReference(shoulderGearRatio*85.0, rev::CANSparkMax::ControlType::kSmartMotion);
+        elbow_pidController.SetReference(elbowGearRatio*156.0, rev::CANSparkMax::ControlType::kSmartMotion);
     }
 };
 void ArmSubsystem::bottomDropPosition(){
