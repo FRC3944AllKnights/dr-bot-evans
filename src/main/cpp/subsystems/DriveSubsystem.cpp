@@ -31,6 +31,10 @@ DriveSubsystem::DriveSubsystem()
                   m_rearLeft.GetPosition(), m_rearRight.GetPosition()},
                  frc::Pose2d{}} {}
 
+frc2::CommandPtr DriveSubsystem::setSlowFactor(double slow){
+  return frc2::cmd::RunOnce([this, slow] { this->slowFactor = slow; }, {this});
+}
+
 void DriveSubsystem::Periodic() {
   // Implementation of subsystem periodic method goes here.
   m_odometry.Update(frc::Rotation2d(units::degree_t{-ahrs.GetAngle()}),
@@ -42,8 +46,9 @@ void DriveSubsystem::Drive(units::meters_per_second_t xSpeed,
                            units::meters_per_second_t ySpeed,
                            units::radians_per_second_t rot, bool fieldRelative,
                            bool rateLimit) {
-  double xSpeedVal = xSpeed.value()*0.1;
-  double ySpeedVal = ySpeed.value()*0.1;
+  double xSpeedVal = xSpeed.value()*slowFactor;
+  double ySpeedVal = ySpeed.value()*slowFactor;
+  double rotVal = rot.value()*slowFactor;
 
   double xSpeedCommanded;
   double ySpeedCommanded;
@@ -98,12 +103,12 @@ void DriveSubsystem::Drive(units::meters_per_second_t xSpeed,
 
     xSpeedCommanded = m_currentTranslationMag * cos(m_currentTranslationDir);
     ySpeedCommanded = m_currentTranslationMag * sin(m_currentTranslationDir);
-    m_currentRotation = m_rotLimiter.Calculate(rot.value());
+    m_currentRotation = m_rotLimiter.Calculate(rotVal);
 
   } else {
     xSpeedCommanded = xSpeedVal;
     ySpeedCommanded = ySpeedVal;
-    m_currentRotation = rot.value();
+    m_currentRotation = rotVal;
   }
 
   // Convert the commanded speeds into the correct units for the drivetrain

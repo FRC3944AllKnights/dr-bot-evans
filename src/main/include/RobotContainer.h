@@ -32,6 +32,7 @@ class RobotContainer {
   RobotContainer();
 
   frc2::Command* GetAutonomousCommand();
+  void initAllSubsystems();
 
  private:
   // The driver's controller

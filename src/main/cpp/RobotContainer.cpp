@@ -59,21 +59,39 @@ RobotContainer::RobotContainer() {
       {&m_intake}));
 }
 
+void RobotContainer::initAllSubsystems() {
+    m_arm.init();
+}
+
 void RobotContainer::ConfigureButtonBindings() {
     m_driverController.Start().OnTrue(new frc2::InstantCommand([this] { m_drive.SetX(); }, {&m_drive}));
     m_driverController.Start().OnTrue(new frc2::InstantCommand([this] { m_arm.init(); }, {&m_arm}));
 
     //gamepiece placing positions
-    m_driverController.B().OnTrue(m_arm.testArm()).OnFalse(m_arm.homePosition());
-    m_driverController.A().OnTrue(m_arm.bottomDropPosition()).OnFalse(m_arm.homePosition());
-    m_driverController.X().OnTrue(m_arm.midDropPosition()).OnFalse(m_arm.homePosition());
-    m_driverController.Y().OnTrue(m_arm.highDropPosition()).OnFalse(m_arm.homePosition());
+    m_driverController.B().OnTrue(m_arm.testArm());
+    m_driverController.B().OnTrue(m_drive.setSlowFactor(0.1));
+
+    m_driverController.A().OnTrue(m_arm.bottomDropPosition());
+    m_driverController.A().OnTrue(m_drive.setSlowFactor(0.1));
+
+    m_driverController.X().OnTrue(m_arm.midDropPosition());
+    m_driverController.X().OnTrue(m_drive.setSlowFactor(0.1));
+
+    m_driverController.Y().OnTrue(m_arm.highDropPosition());
+    m_driverController.Y().OnTrue(m_drive.setSlowFactor(0.1));
 
     //gamepiece pickup positions
     frc2::POVButton(&m_driverController, 0).OnTrue(m_arm.trayPickupPosition());
+    frc2::POVButton(&m_driverController, 0).OnTrue(m_drive.setSlowFactor(0.1));
+
     frc2::POVButton(&m_driverController, 270).OnTrue(m_arm.chutePickupPosition());
+    frc2::POVButton(&m_driverController, 270).OnTrue(m_drive.setSlowFactor(0.1));
+
     frc2::POVButton(&m_driverController, 180).OnTrue(m_arm.floorPickupPosition());
+    frc2::POVButton(&m_driverController, 180).OnTrue(m_drive.setSlowFactor(0.1));
+
     frc2::POVButton(&m_driverController, 90).OnTrue(m_arm.homePosition());
+    frc2::POVButton(&m_driverController, 90).OnTrue(m_drive.setSlowFactor(1.0));
 
     //choose gamepiece
     m_driverController.LeftBumper().OnTrue(new frc2::InstantCommand([this] {m_arm.setCone(); }, {&m_arm}));
@@ -127,6 +145,6 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
   return new frc2::SequentialCommandGroup(
       std::move(swerveControllerCommand),
       frc2::InstantCommand(
-          [this]() { m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, true, false); },
+          [this]() { m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, true, true); },
           {}));
 }
