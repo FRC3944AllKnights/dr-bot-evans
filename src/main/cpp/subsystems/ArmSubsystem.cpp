@@ -49,13 +49,13 @@ frc2::CommandPtr ArmSubsystem::moveElbowCommand(double desired_angle){
 }
 
 frc2::CommandPtr ArmSubsystem::waitForElbowMove(double desired_angle){
-    return frc2::cmd::WaitUntil([this, desired_angle] { return (this->elbow_encoder.GetPosition()/this->elbowGearRatio < (desired_angle+3) 
-                        && this->elbow_encoder.GetPosition()/this->elbowGearRatio > (desired_angle-3)); });
+    return frc2::cmd::WaitUntil([this, desired_angle] { return (this->elbow_encoder.GetPosition()/this->elbowGearRatio < (desired_angle+10) 
+                        && this->elbow_encoder.GetPosition()/this->elbowGearRatio > (desired_angle-10)); });
 }
 
 frc2::CommandPtr ArmSubsystem::waitForShoulderMove(double desired_angle){
-    return frc2::cmd::WaitUntil([this, desired_angle] { return (this->shoulder_encoder.GetPosition()/this->shoulderGearRatio < (desired_angle+3) 
-                        && this->shoulder_encoder.GetPosition()/this->shoulderGearRatio > (desired_angle-3)); });
+    return frc2::cmd::WaitUntil([this, desired_angle] { return (this->shoulder_encoder.GetPosition()/this->shoulderGearRatio < (desired_angle+10) 
+                        && this->shoulder_encoder.GetPosition()/this->shoulderGearRatio > (desired_angle-10)); });
 }
 
 frc2::CommandPtr ArmSubsystem::moveArmCommand(double shoulder_angle, double elbow_angle){
