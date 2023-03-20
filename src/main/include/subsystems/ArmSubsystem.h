@@ -5,6 +5,7 @@
 #pragma once
 #include <rev/CANSparkMax.h>
 #include <frc2/command/SubsystemBase.h>
+#include <frc2/command/Commands.h>
 #include <frc/SmartDashboard/SmartDashboard.h>
 
 #include "Constants.h"
@@ -19,20 +20,27 @@ class ArmSubsystem : public frc2::SubsystemBase {
 
   void init();
 
+  frc2::CommandPtr moveArmCommand(double shoulder_angle, double elbow_angle);
+  frc2::CommandPtr moveShoulderCommand(double desired_angle);
+  frc2::CommandPtr moveElbowCommand(double desired_angle);
+
+  frc2::CommandPtr waitForElbowMove(double desired_angle);
+  frc2::CommandPtr waitForShoulderMove(double desired_angle);
+
   //sets cube vs cone mode
   void setCone(); //LB
   void setCube(); //RB
   
   //position presets
-  void homePosition(); //→
-  void floorPickupPosition(); //↓
-  void chutePickupPosition(); //←
-  void trayPickupPosition(); //↑ 
-  void bottomDropPosition(); //A
-  void midDropPosition(); //X
-  void highDropPosition(); //Y
+  frc2::CommandPtr homePosition(); //→
+  frc2::CommandPtr floorPickupPosition(); //↓
+  frc2::CommandPtr chutePickupPosition(); //←
+  frc2::CommandPtr trayPickupPosition(); //↑ 
+  frc2::CommandPtr bottomDropPosition(); //A
+  frc2::CommandPtr midDropPosition(); //X
+  frc2::CommandPtr highDropPosition(); //Y
 
-  void testArm();
+  frc2::CommandPtr testArm();
 
  private:
     bool isConeMode = true;
@@ -46,5 +54,4 @@ class ArmSubsystem : public frc2::SubsystemBase {
     rev::CANSparkMax elbow_motor{2, rev::CANSparkMax::MotorType::kBrushless};
     rev::SparkMaxPIDController elbow_pidController = elbow_motor.GetPIDController();
     rev::SparkMaxRelativeEncoder elbow_encoder = elbow_motor.GetEncoder();
-
 };

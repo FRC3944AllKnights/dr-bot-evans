@@ -1,6 +1,7 @@
 #include "subsystems/ArmSubsystem.h"
 
 using namespace ArmConstants;
+using namespace std;
 
 ArmSubsystem::ArmSubsystem() {}
 
@@ -38,76 +39,88 @@ void ArmSubsystem::setCone(){
 void ArmSubsystem::setCube(){
     isConeMode = false;
 }
+
+frc2::CommandPtr ArmSubsystem::moveShoulderCommand(double desired_angle){
+    return frc2::cmd::RunOnce([this, desired_angle] { this->shoulder_pidController.SetReference(desired_angle*shoulderGearRatio, rev::CANSparkMax::ControlType::kSmartMotion); }, {this});
+}
+
+frc2::CommandPtr ArmSubsystem::moveElbowCommand(double desired_angle){
+    return frc2::cmd::RunOnce([this, desired_angle] { this->elbow_pidController.SetReference(desired_angle*elbowGearRatio, rev::CANSparkMax::ControlType::kSmartMotion); }, {this});
+}
+
+frc2::CommandPtr ArmSubsystem::waitForElbowMove(double desired_angle){
+    return frc2::cmd::WaitUntil([this, desired_angle] { return (this->elbow_encoder.GetPosition()/this->elbowGearRatio < (desired_angle+3) 
+                        && this->elbow_encoder.GetPosition()/this->elbowGearRatio > (desired_angle-3)); });
+}
+
+frc2::CommandPtr ArmSubsystem::waitForShoulderMove(double desired_angle){
+    return frc2::cmd::WaitUntil([this, desired_angle] { return (this->shoulder_encoder.GetPosition()/this->shoulderGearRatio < (desired_angle+3) 
+                        && this->shoulder_encoder.GetPosition()/this->shoulderGearRatio > (desired_angle-3)); });
+}
+
+frc2::CommandPtr ArmSubsystem::moveArmCommand(double shoulder_angle, double elbow_angle){
+    if (elbow_angle*elbowGearRatio > elbow_encoder.GetPosition()){
+        return std::move(moveShoulderCommand(shoulder_angle)).AndThen(std::move(waitForShoulderMove(shoulder_angle))).AndThen(std::move(moveElbowCommand(elbow_angle)));
+    } else{
+        return std::move(moveElbowCommand(elbow_angle)).AndThen(std::move(waitForElbowMove(elbow_angle))).AndThen(std::move(moveShoulderCommand(shoulder_angle)));
+    }
+}
     
 
-void ArmSubsystem::homePosition(){
-    shoulder_pidController.SetReference(0.0, rev::CANSparkMax::ControlType::kSmartMotion);
-    elbow_pidController.SetReference(0.0, rev::CANSparkMax::ControlType::kSmartMotion);
+frc2::CommandPtr ArmSubsystem::homePosition(){
+    return moveArmCommand(0.0, 1.0);
 };
 
-void ArmSubsystem::floorPickupPosition(){
+frc2::CommandPtr ArmSubsystem::floorPickupPosition(){
     if(isConeMode){
-        shoulder_pidController.SetReference((shoulderGearRatio*0.0), rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference((elbowGearRatio*75.0), rev::CANSparkMax::ControlType::kSmartMotion);
+        return moveArmCommand(0.0, 75.0);
     } else{
-        shoulder_pidController.SetReference((shoulderGearRatio*10.0), rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference((elbowGearRatio*111.5), rev::CANSparkMax::ControlType::kSmartMotion);
+        return moveArmCommand(10.0, 111.5);
     }
 };
 
-void ArmSubsystem::chutePickupPosition(){
+frc2::CommandPtr ArmSubsystem::chutePickupPosition(){
     if(isConeMode){
-        shoulder_pidController.SetReference((shoulderGearRatio*29.0), rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference((elbowGearRatio*36.0), rev::CANSparkMax::ControlType::kSmartMotion);
+        return moveArmCommand(29.0, 36.0);
     } else{
-        shoulder_pidController.SetReference((shoulderGearRatio*0.0), rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference((elbowGearRatio*38.0), rev::CANSparkMax::ControlType::kSmartMotion);
+        return moveArmCommand(0.0, 38.0);
     }
 };
 
-void ArmSubsystem::trayPickupPosition(){
+frc2::CommandPtr ArmSubsystem::trayPickupPosition(){
     if(isConeMode){
-        shoulder_pidController.SetReference(shoulderGearRatio*82.0, rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference(elbowGearRatio*130, rev::CANSparkMax::ControlType::kSmartMotion);
+        return moveArmCommand(82.0, 130.0);
     } else{
-        shoulder_pidController.SetReference(shoulderGearRatio*83.0, rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference(elbowGearRatio*165.0, rev::CANSparkMax::ControlType::kSmartMotion);
+        return moveArmCommand(83.0, 165.0);
     }
 };
-void ArmSubsystem::bottomDropPosition(){
+frc2::CommandPtr ArmSubsystem::bottomDropPosition(){
     if(isConeMode){
-        shoulder_pidController.SetReference(shoulderGearRatio*0.0, rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference(elbowGearRatio*21.0, rev::CANSparkMax::ControlType::kSmartMotion);
+        return moveArmCommand(0.0, 21.0);
     } else{
-        shoulder_pidController.SetReference(shoulderGearRatio*0.0, rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference(elbowGearRatio*75.0, rev::CANSparkMax::ControlType::kSmartMotion);
+        return moveArmCommand(0.0, 75.0);
     }
 };
 
-void ArmSubsystem::midDropPosition(){
+frc2::CommandPtr ArmSubsystem::midDropPosition(){
     if(isConeMode){
-        shoulder_pidController.SetReference((shoulderGearRatio*45.0), rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference((elbowGearRatio*61), rev::CANSparkMax::ControlType::kSmartMotion);
+        return moveArmCommand(45.0, 61.0);
     } else{
-        shoulder_pidController.SetReference((shoulderGearRatio*10.0), rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference((elbowGearRatio*41.0), rev::CANSparkMax::ControlType::kSmartMotion);
+        return moveArmCommand(10.0, 41.0);
     }
 };
 
-void ArmSubsystem::highDropPosition(){
+frc2::CommandPtr ArmSubsystem::highDropPosition(){
     if(isConeMode){
-        shoulder_pidController.SetReference((shoulderGearRatio*90.0), rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference((elbowGearRatio*130.0), rev::CANSparkMax::ControlType::kSmartMotion);
+        return moveArmCommand(90.0, 130.0);
     } else{
-        shoulder_pidController.SetReference((shoulderGearRatio*60.0), rev::CANSparkMax::ControlType::kSmartMotion);
-        elbow_pidController.SetReference((elbowGearRatio*93.0), rev::CANSparkMax::ControlType::kSmartMotion);
+        return moveArmCommand(60.0, 93.0);
     }
 };
 
-void ArmSubsystem::testArm(){
+frc2::CommandPtr ArmSubsystem::testArm(){
     double elbowSetPoint = frc::SmartDashboard::GetNumber("Set Elbow Degrees", 0);
     double shoulderSetPoint = frc::SmartDashboard::GetNumber("Set Shoulder Degrees", 0);
 
-    shoulder_pidController.SetReference((shoulderGearRatio*shoulderSetPoint), rev::CANSparkMax::ControlType::kSmartMotion);
-    elbow_pidController.SetReference((elbowGearRatio*elbowSetPoint), rev::CANSparkMax::ControlType::kSmartMotion);
+    return moveArmCommand(shoulderSetPoint, elbowSetPoint);
 }

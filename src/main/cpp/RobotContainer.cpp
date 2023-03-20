@@ -60,55 +60,27 @@ RobotContainer::RobotContainer() {
 }
 
 void RobotContainer::ConfigureButtonBindings() {
-    frc2::JoystickButton(&m_driverController, frc::XboxController::Button::kStart).OnTrue(
-        new frc2::InstantCommand([this] { m_drive.SetX(); }, {&m_drive})
-    );
+    m_driverController.Start().OnTrue(new frc2::InstantCommand([this] { m_drive.SetX(); }, {&m_drive}));
+    m_driverController.Start().OnTrue(new frc2::InstantCommand([this] { m_arm.init(); }, {&m_arm}));
 
-    frc2::JoystickButton(&m_driverController, frc::XboxController::Button::kB).OnTrue(
-        new frc2::InstantCommand([this] { m_arm.testArm(); }, {&m_arm})
-    );
+    //gamepiece placing positions
+    m_driverController.B().OnTrue(m_arm.testArm()).OnFalse(m_arm.homePosition());
+    m_driverController.A().OnTrue(m_arm.bottomDropPosition()).OnFalse(m_arm.homePosition());
+    m_driverController.X().OnTrue(m_arm.midDropPosition()).OnFalse(m_arm.homePosition());
+    m_driverController.Y().OnTrue(m_arm.highDropPosition()).OnFalse(m_arm.homePosition());
 
-    frc2::JoystickButton(&m_driverController, frc::XboxController::Button::kStart).OnTrue(
-        new frc2::InstantCommand([this] { m_arm.init(); }, {&m_arm})
-    );
+    //gamepiece pickup positions
+    frc2::POVButton(&m_driverController, 0).OnTrue(m_arm.trayPickupPosition());
+    frc2::POVButton(&m_driverController, 270).OnTrue(m_arm.chutePickupPosition());
+    frc2::POVButton(&m_driverController, 180).OnTrue(m_arm.floorPickupPosition());
+    frc2::POVButton(&m_driverController, 90).OnTrue(m_arm.homePosition());
 
-    //arm drop positions
-    frc2::JoystickButton(&m_driverController, frc::XboxController::Button::kA).OnTrue(
-        new frc2::InstantCommand([this] {m_arm.bottomDropPosition(); }, {&m_arm})
-    );
+    //choose gamepiece
+    m_driverController.LeftBumper().OnTrue(new frc2::InstantCommand([this] {m_arm.setCone(); }, {&m_arm}));
+    m_driverController.LeftBumper().OnTrue(new frc2::InstantCommand([this] {m_intake.setCone(); }, {&m_arm}));
+    m_driverController.RightBumper().OnTrue(new frc2::InstantCommand([this] {m_arm.setCube(); }, {&m_arm}));
+    m_driverController.RightBumper().OnTrue(new frc2::InstantCommand([this] {m_intake.setCube(); }, {&m_arm}));
 
-    frc2::JoystickButton(&m_driverController, frc::XboxController::Button::kX).OnTrue(
-        new frc2::InstantCommand([this] {m_arm.midDropPosition(); }, {&m_arm})
-    );
-
-    frc2::JoystickButton(&m_driverController, frc::XboxController::Button::kY).OnTrue(
-        new frc2::InstantCommand([this] {m_arm.highDropPosition(); }, {&m_arm})
-    );
-
-    frc2::JoystickButton(&m_driverController, frc::XboxController::Button::kLeftBumper).OnTrue(
-        new frc2::InstantCommand([this] {m_arm.setCone(); }, {&m_arm})
-    );
-
-    frc2::JoystickButton(&m_driverController, frc::XboxController::Button::kRightBumper).OnTrue(
-        new frc2::InstantCommand([this] {m_arm.setCube(); }, {&m_arm})
-    );
-
-    //arm pickup positions
-    frc2::POVButton(&m_driverController, 0).OnTrue(
-        new frc2::InstantCommand([this] {m_arm.trayPickupPosition(); }, {&m_arm})
-    );
-
-    frc2::POVButton(&m_driverController, 270).OnTrue(
-        new frc2::InstantCommand([this] {m_arm.chutePickupPosition(); }, {&m_arm})
-    );
-
-    frc2::POVButton(&m_driverController, 180).OnTrue(
-        new frc2::RunCommand([this] {m_arm.floorPickupPosition(); }, {&m_arm})
-    );
-
-    frc2::POVButton(&m_driverController, 90).OnTrue(
-        new frc2::InstantCommand([this] {m_arm.homePosition(); }, {&m_arm})
-    );
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

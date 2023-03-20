@@ -5,19 +5,13 @@
 #include "Constants.h"
 
 class IntakeSubsystem : public frc2::SubsystemBase {
- public:
-  IntakeSubsystem();
+    public:
+        IntakeSubsystem();
+        void grabPlace(double LT, double RT); //LT, RT
+        void setCube();
+        void setCone();
 
-  void grabPlace(double LT, double RT); //LT, RT
-
- private:
-
- rev::CANSparkMax intake_motor{3, rev::CANSparkMax::MotorType::kBrushless};
-
-
-
-
-
-
-
+    private:
+        double gamePieceMultiplier = 0.5;
+        rev::CANSparkMax intake_motor{3, rev::CANSparkMax::MotorType::kBrushless};
 };
