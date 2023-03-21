@@ -56,7 +56,15 @@ RobotContainer::RobotContainer() {
             {frc::ApplyDeadband(
                 m_driverController.GetRightTriggerAxis(), OIConstants::kDriveDeadband)});
       },
-      {&m_intake}));
+      {&m_intake}
+    ));
+
+    m_arm.SetDefaultCommand(frc2::RunCommand(
+        [this] {
+            m_arm.getStats();
+        },
+        {&m_arm}
+    ));
 }
 
 void RobotContainer::initAllSubsystems() {
