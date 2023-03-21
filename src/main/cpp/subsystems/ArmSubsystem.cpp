@@ -40,6 +40,21 @@ void ArmSubsystem::setCube(){
     isConeMode = false;
 }
 
+void ArmSubsystem::setElbowFast(){
+    elbow_pidController.SetSmartMotionMaxVelocity(elbowMaxVel);
+    shoulder_pidController.SetSmartMotionMaxVelocity(1000);
+}
+
+void ArmSubsystem::setElbowSlow(){
+    elbow_pidController.SetSmartMotionMaxVelocity(2000);
+    shoulder_pidController.SetSmartMotionMaxVelocity(shoulderMaxVel);
+}
+
+void ArmSubsystem::moveArm(double s, double e){
+    shoulder_pidController.SetReference(s*shoulderGearRatio, rev::CANSparkMax::ControlType::kSmartMotion);
+    elbow_pidController.SetReference(e*elbowGearRatio, rev::CANSparkMax::ControlType::kSmartMotion);
+}
+
 frc2::CommandPtr ArmSubsystem::moveShoulderCommand(double s){
     return frc2::cmd::RunOnce([this, s] { this->shoulder_pidController.SetReference(s*shoulderGearRatio, rev::CANSparkMax::ControlType::kSmartMotion); }, {this});
 }
@@ -59,11 +74,25 @@ frc2::CommandPtr ArmSubsystem::waitForShoulderMove(double s){
 }
 
 frc2::CommandPtr ArmSubsystem::moveShoulderFirst(double s, double e){
-    return std::move(moveShoulderCommand(s)).AndThen(std::move(waitForShoulderMove(s))).AndThen(std::move(moveElbowCommand(e)));
+    frc2::CommandPtr moveArm = frc2::cmd::RunOnce(
+        [this, e, s] { this->moveArm(s, e); }, {this});
+
+    frc2::CommandPtr setShoulderFirst = frc2::cmd::RunOnce(
+        [this] {this->setElbowSlow(); }, {this});
+
+    return std::move(setShoulderFirst).AndThen(std::move(moveArm));
+    //return std::move(moveShoulderCommand(s)).AndThen(std::move(waitForShoulderMove(s))).AndThen(std::move(moveElbowCommand(e)));
 }
 
 frc2::CommandPtr ArmSubsystem::moveElbowFirst(double s, double e){
-    return std::move(moveElbowCommand(e)).AndThen(std::move(waitForElbowMove(e))).AndThen(std::move(moveShoulderCommand(s)));
+    frc2::CommandPtr moveArm = frc2::cmd::RunOnce(
+        [this, e, s] { this->moveArm(s, e); }, {this});
+
+    frc2::CommandPtr setElbowFirst = frc2::cmd::RunOnce(
+        [this] {this->setElbowFast(); }, {this});
+
+    return std::move(setElbowFirst).AndThen(std::move(moveArm));
+    //return std::move(moveElbowCommand(e)).AndThen(std::move(waitForElbowMove(e))).AndThen(std::move(moveShoulderCommand(s)));
 }
 
 frc2::CommandPtr ArmSubsystem::moveArmCommand(double s, double e){
@@ -81,9 +110,12 @@ double ArmSubsystem::getShoulderAngle(){
     return encoder_position;
 } 
 
-void ArmSubsystem::getStats(){
+void ArmSubsystem::getSetStates(){
     frc::SmartDashboard::PutNumber("Elbow Angle", getElbowAngle());
     frc::SmartDashboard::PutNumber("Shoulder Angle", getShoulderAngle());
+
+    desired_elbow_angle = frc::SmartDashboard::GetNumber("Set Elbow Degrees", 0);
+    desired_shoulder_angle = frc::SmartDashboard::GetNumber("Set Shoulder Degrees", 0);
 }
 
 frc2::CommandPtr ArmSubsystem::homePosition(){
@@ -121,8 +153,8 @@ frc2::CommandPtr ArmSubsystem::highDropPosition(){
 };
 
 frc2::CommandPtr ArmSubsystem::testArm(){
-    double elbowSetPoint = frc::SmartDashboard::GetNumber("Set Elbow Degrees", 0);
-    double shoulderSetPoint = frc::SmartDashboard::GetNumber("Set Shoulder Degrees", 0);
 
-    return moveArmCommand(shoulderSetPoint, elbowSetPoint);
+    return frc2::cmd::RunOnce(
+        [this] { this->moveArm(this->desired_shoulder_angle, this->desired_elbow_angle); }, {this}
+    );
 }

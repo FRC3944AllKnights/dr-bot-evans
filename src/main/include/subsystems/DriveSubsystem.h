@@ -124,7 +124,7 @@ class DriveSubsystem : public frc2::SubsystemBase {
   double m_currentTranslationDir = 0.0;
   double m_currentTranslationMag = 0.0;
 
-  double slowFactor = 1.0;
+  double slowFactor = 0.5;
 
   frc::SlewRateLimiter<units::scalar> m_magLimiter{
       DriveConstants::kMagnitudeSlewRate / 1_s};

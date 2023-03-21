@@ -61,7 +61,7 @@ RobotContainer::RobotContainer() {
 
     m_arm.SetDefaultCommand(frc2::RunCommand(
         [this] {
-            m_arm.getStats();
+            m_arm.getSetStates();
         },
         {&m_arm}
     ));
@@ -99,11 +99,12 @@ void RobotContainer::ConfigureButtonBindings() {
     frc2::POVButton(&m_driverController, 180).OnTrue(m_drive.setSlowFactor(0.1));
 
     frc2::POVButton(&m_driverController, 90).OnTrue(m_arm.homePosition());
-    frc2::POVButton(&m_driverController, 90).OnTrue(m_drive.setSlowFactor(1.0));
+    frc2::POVButton(&m_driverController, 90).OnTrue(m_drive.setSlowFactor(0.5));
 
     //choose gamepiece
     m_driverController.LeftBumper().OnTrue(new frc2::InstantCommand([this] {m_arm.setCone(); }, {&m_arm}));
     m_driverController.LeftBumper().OnTrue(new frc2::InstantCommand([this] {m_intake.setCone(); }, {&m_arm}));
+
     m_driverController.RightBumper().OnTrue(new frc2::InstantCommand([this] {m_arm.setCube(); }, {&m_arm}));
     m_driverController.RightBumper().OnTrue(new frc2::InstantCommand([this] {m_intake.setCube(); }, {&m_arm}));
 

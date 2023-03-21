@@ -22,6 +22,10 @@ class ArmSubsystem : public frc2::SubsystemBase {
   void init();
   bool getMode();
 
+  void setElbowFast();
+  void setElbowSlow();
+  void moveArm(double s, double e);
+
   frc2::CommandPtr moveArmCommand(double s, double e);
   frc2::CommandPtr moveShoulderFirst(double s, double e);
   frc2::CommandPtr moveElbowFirst(double s, double e);
@@ -37,7 +41,7 @@ class ArmSubsystem : public frc2::SubsystemBase {
 
   double getElbowAngle();
   double getShoulderAngle();
-  void getStats();
+  void getSetStates();
   
   //position presets
   frc2::CommandPtr homePosition(); //→
