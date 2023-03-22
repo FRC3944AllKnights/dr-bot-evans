@@ -23,6 +23,20 @@ frc2::CommandPtr autos::PlaceConeAndDriveBack(DriveSubsystem* drive, ArmSubsyste
         arm->highDropPosition(),
         frc2::cmd::Wait(3.0_s).AsProxy().AndThen([intake] {intake->grabPlace(0.0, 0.3);}),
         frc2::cmd::Wait(1.0_s).AsProxy().AndThen(arm->homePosition()),
+        //drive backward
+        frc2::FunctionalCommand(
+            // Reset odometry on command start
+             [drive] { drive->ResetOdometry(frc::Pose2d{0_m, 0_m, 0_deg}); },
+             // Drive while the command is executing
+             [drive] {drive->Drive(-0.1_mps, 0_mps, 0_rad_per_s, false, true);},
+             // stop driving
+             [drive](bool interrupted) {drive->Drive(0_mps, 0_mps, 0_rad_per_s, false, true);},
+             //distance to drive
+             [drive] {
+               return drive->GetPose().X() >= -0.5_m;
+             },
+             // Requires the drive subsystem
+             {drive}).ToPtr(),
         //turn 180 degrees
         frc2::FunctionalCommand(
             // Reset odometry on command start

@@ -31,6 +31,9 @@ void ArmSubsystem::init(){
     frc::SmartDashboard::PutNumber("Set Elbow Degrees", 0);
     frc::SmartDashboard::PutNumber("Set Shoulder Degrees", 0);
 
+    shoulder_pidController.SetIAccum(0.0);
+    elbow_pidController.SetIAccum(0.0);
+
     moveArm(0.0, 1.0);
 }
 
@@ -48,7 +51,7 @@ void ArmSubsystem::setElbowFast(){
 }
 
 void ArmSubsystem::setElbowSlow(){
-    elbow_pidController.SetSmartMotionMaxVelocity(2000);
+    elbow_pidController.SetSmartMotionMaxVelocity(1000);
     shoulder_pidController.SetSmartMotionMaxVelocity(shoulderMaxVel);
 }
 
