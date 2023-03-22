@@ -106,6 +106,8 @@ class DriveSubsystem : public frc2::SubsystemBase {
       frc::Translation2d{-DriveConstants::kWheelBase / 2,
                          -DriveConstants::kTrackWidth / 2}};
 
+    double slowFactor = 0.5;
+
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
@@ -123,8 +125,6 @@ class DriveSubsystem : public frc2::SubsystemBase {
   double m_currentRotation = 0.0;
   double m_currentTranslationDir = 0.0;
   double m_currentTranslationMag = 0.0;
-
-  double slowFactor = 0.5;
 
   frc::SlewRateLimiter<units::scalar> m_magLimiter{
       DriveConstants::kMagnitudeSlewRate / 1_s};

@@ -20,6 +20,8 @@
 #include "subsystems/ArmSubsystem.h"
 #include "subsystems/IntakeSubsystem.h"
 
+#include "commands/autonomous.h"
+
 /**
  * This class is where the bulk of the robot should be declared.  Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -44,6 +46,9 @@ class RobotContainer {
   DriveSubsystem m_drive;
   ArmSubsystem m_arm;
   IntakeSubsystem m_intake;
+
+  frc2::CommandPtr m_simpleAuto = autos::SimpleAuto(&m_drive);
+  frc2::CommandPtr m_complexAuto = autos::PlaceConeAndDriveBack(&m_drive, &m_arm, &m_intake);
 
   // The chooser for the autonomous routines
   frc::SendableChooser<frc2::Command*> m_chooser;

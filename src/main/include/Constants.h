@@ -122,10 +122,10 @@ constexpr units::ampere_t kTurningMotorCurrentLimit = 20_A;
 }  // namespace ModuleConstants
 
 namespace AutoConstants {
-constexpr auto kMaxSpeed = 2_mps;
-constexpr auto kMaxAcceleration = 3_mps_sq;
-constexpr auto kMaxAngularSpeed = 3.142_rad_per_s;
-constexpr auto kMaxAngularAcceleration = 3.142_rad_per_s_sq;
+constexpr auto kMaxSpeed = 0.5_mps;
+constexpr auto kMaxAcceleration = 1_mps_sq;
+constexpr auto kMaxAngularSpeed = 1.142_rad_per_s;
+constexpr auto kMaxAngularAcceleration = 1.142_rad_per_s_sq;
 
 constexpr double kPXController = 0.5;
 constexpr double kPYController = 0.5;

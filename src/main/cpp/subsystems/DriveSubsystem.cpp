@@ -46,9 +46,9 @@ void DriveSubsystem::Drive(units::meters_per_second_t xSpeed,
                            units::meters_per_second_t ySpeed,
                            units::radians_per_second_t rot, bool fieldRelative,
                            bool rateLimit) {
-  double xSpeedVal = xSpeed.value()*slowFactor;
-  double ySpeedVal = ySpeed.value()*slowFactor;
-  double rotVal = rot.value()*slowFactor;
+  double xSpeedVal = xSpeed.value();
+  double ySpeedVal = ySpeed.value();
+  double rotVal = rot.value();
 
   double xSpeedCommanded;
   double ySpeedCommanded;

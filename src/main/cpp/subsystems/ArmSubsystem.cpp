@@ -30,6 +30,8 @@ void ArmSubsystem::init(){
 
     frc::SmartDashboard::PutNumber("Set Elbow Degrees", 0);
     frc::SmartDashboard::PutNumber("Set Shoulder Degrees", 0);
+
+    moveArm(0.0, 1.0);
 }
 
 void ArmSubsystem::setCone(){

@@ -28,6 +28,11 @@ using namespace DriveConstants;
 
 RobotContainer::RobotContainer() {
   // Initialize all of your commands and subsystems here
+  m_chooser.SetDefaultOption("Simple Auto", m_simpleAuto.get());
+  m_chooser.AddOption("Complex Auto", m_complexAuto.get());
+
+  // Put the chooser on the dashboard
+  frc::SmartDashboard::PutData(&m_chooser);
 
   // Configure the button bindings
   ConfigureButtonBindings();
@@ -39,11 +44,11 @@ RobotContainer::RobotContainer() {
       [this] {
         m_drive.Drive(
             -units::meters_per_second_t{frc::ApplyDeadband(
-                m_driverController.GetLeftY(), OIConstants::kDriveDeadband)},
+                m_driverController.GetLeftY()*m_drive.slowFactor, OIConstants::kDriveDeadband)},
             -units::meters_per_second_t{frc::ApplyDeadband(
-                m_driverController.GetLeftX(), OIConstants::kDriveDeadband)},
+                m_driverController.GetLeftX()*m_drive.slowFactor, OIConstants::kDriveDeadband)},
             -units::radians_per_second_t{frc::ApplyDeadband(
-                m_driverController.GetRightX(), OIConstants::kDriveDeadband)},
+                m_driverController.GetRightX()*m_drive.slowFactor, OIConstants::kDriveDeadband)},
             true, true);
       },
       {&m_drive}));
@@ -111,49 +116,5 @@ void RobotContainer::ConfigureButtonBindings() {
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
-  // Set up config for trajectory
-  frc::TrajectoryConfig config(AutoConstants::kMaxSpeed,
-                               AutoConstants::kMaxAcceleration);
-  // Add kinematics to ensure max speed is actually obeyed
-  config.SetKinematics(m_drive.kDriveKinematics);
-
-  // An example trajectory to follow.  All units in meters.
-  auto exampleTrajectory = frc::TrajectoryGenerator::GenerateTrajectory(
-      // Start at the origin facing the +X direction
-      frc::Pose2d{0_m, 0_m, 0_deg},
-      // Pass through these two interior waypoints, making an 's' curve path
-      {frc::Translation2d{1_m, 1_m}, frc::Translation2d{2_m, -1_m}},
-      // End 3 meters straight ahead of where we started, facing forward
-      frc::Pose2d{3_m, 0_m, 0_deg},
-      // Pass the config
-      config);
-
-  frc::ProfiledPIDController<units::radians> thetaController{
-      AutoConstants::kPThetaController, 0, 0,
-      AutoConstants::kThetaControllerConstraints};
-
-  thetaController.EnableContinuousInput(units::radian_t{-std::numbers::pi},
-                                        units::radian_t{std::numbers::pi});
-
-  frc2::SwerveControllerCommand<4> swerveControllerCommand(
-      exampleTrajectory, [this]() { return m_drive.GetPose(); },
-
-      m_drive.kDriveKinematics,
-
-      frc2::PIDController{AutoConstants::kPXController, 0, 0},
-      frc2::PIDController{AutoConstants::kPYController, 0, 0}, thetaController,
-
-      [this](auto moduleStates) { m_drive.SetModuleStates(moduleStates); },
-
-      {&m_drive});
-
-  // Reset odometry to the starting pose of the trajectory.
-  m_drive.ResetOdometry(exampleTrajectory.InitialPose());
-
-  // no auto
-  return new frc2::SequentialCommandGroup(
-      std::move(swerveControllerCommand),
-      frc2::InstantCommand(
-          [this]() { m_drive.Drive(0_mps, 0_mps, 0_rad_per_s, true, true); },
-          {}));
+    return m_chooser.GetSelected();
 }
