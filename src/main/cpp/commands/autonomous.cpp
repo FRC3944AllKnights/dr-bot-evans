@@ -1,5 +1,7 @@
 #include "commands/autonomous.h"
 
+#include <frc/SmartDashboard/SmartDashboard.h>
+
 using namespace AutoConstants;
 
 frc2::CommandPtr autos::SimpleAuto(DriveSubsystem* drive) {
@@ -33,7 +35,8 @@ frc2::CommandPtr autos::PlaceConeAndDriveBack(DriveSubsystem* drive, ArmSubsyste
              [drive](bool interrupted) {drive->Drive(0_mps, 0_mps, 0_rad_per_s, false, true);},
              //distance to drive
              [drive] {
-               return drive->GetPose().X() >= -0.5_m;
+              return drive->GetPose().X() <= -1.0_m;
+               
              },
              // Requires the drive subsystem
              {drive}).ToPtr(),
@@ -44,10 +47,10 @@ frc2::CommandPtr autos::PlaceConeAndDriveBack(DriveSubsystem* drive, ArmSubsyste
              // Drive  while the command is executing
              [drive] {drive->Drive(0_mps, 0_mps, 0.1_rad_per_s, false, true);},
              // stop driving
-             [drive](bool interrupted) {drive->Drive(0_mps, 0_mps, 0_rad_per_s, false, true);
-                                        drive->ZeroHeading();},
+             [drive](bool interrupted) {drive->Drive(0_mps, 0_mps, 0_rad_per_s, false, true);},
              //distance to drive
              [drive] {
+              frc::SmartDashboard::PutNumber("gyro heading", drive->GetPose().Rotation().Degrees().value());
                return drive->GetPose().Rotation().Degrees() >= 180_deg;
              },
              // Requires the drive subsystem
