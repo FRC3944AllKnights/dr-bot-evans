@@ -101,7 +101,7 @@ void RobotContainer::ConfigureButtonBindings() {
     frc2::POVButton(&m_driverController, 270).OnTrue(m_drive.setSlowFactor(0.1));
 
     frc2::POVButton(&m_driverController, 180).OnTrue(m_arm.floorPickupPosition());
-    frc2::POVButton(&m_driverController, 180).OnTrue(m_drive.setSlowFactor(0.1));
+    frc2::POVButton(&m_driverController, 180).OnTrue(m_drive.setSlowFactor(0.25));
 
     frc2::POVButton(&m_driverController, 90).OnTrue(m_arm.homePosition());
     frc2::POVButton(&m_driverController, 90).OnTrue(m_drive.setSlowFactor(0.5));

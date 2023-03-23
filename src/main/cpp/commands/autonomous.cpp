@@ -35,6 +35,7 @@ frc2::CommandPtr autos::PlaceConeAndDriveBack(DriveSubsystem* drive, ArmSubsyste
              [drive](bool interrupted) {drive->Drive(0_mps, 0_mps, 0_rad_per_s, false, true);},
              //distance to drive
              [drive] {
+              frc::SmartDashboard::PutNumber("gyro heading", drive->GetPose().X().value());
               return drive->GetPose().X() <= -1.0_m;
                
              },
@@ -45,13 +46,13 @@ frc2::CommandPtr autos::PlaceConeAndDriveBack(DriveSubsystem* drive, ArmSubsyste
             // Reset odometry on command start
              [drive] { drive->ResetOdometry(frc::Pose2d{0_m, 0_m, 0_deg}); },
              // Drive  while the command is executing
-             [drive] {drive->Drive(0_mps, 0_mps, 0.1_rad_per_s, false, true);},
+             [drive] {drive->Drive(0_mps, 0_mps, 0.3_rad_per_s, false, true);},
              // stop driving
-             [drive](bool interrupted) {drive->Drive(0_mps, 0_mps, 0_rad_per_s, false, true);},
+             [drive](bool interrupted) {drive->Drive(0_mps, 0_mps, 0_rad_per_s, false, false);},
              //distance to drive
              [drive] {
               frc::SmartDashboard::PutNumber("gyro heading", drive->GetPose().Rotation().Degrees().value());
-               return drive->GetPose().Rotation().Degrees() >= 180_deg;
+               return drive->GetPose().Rotation().Degrees() >= 148.0_deg;
              },
              // Requires the drive subsystem
              {drive}).ToPtr(),

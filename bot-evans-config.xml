@@ -1,0 +1,33 @@
+<xml version="1.0">
+<dashboard>
+	<static-widget class="edu.wpi.first.smartdashboard.gui.elements.CameraServerViewer">
+		<location x="4" y="106"/>
+		<width>781</width>
+		<height>523</height>
+		<property name="Camera Choice" value=""/>
+	</static-widget>
+	<widget field="Shoulder Angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1012" y="399"/>
+	</widget>
+	<widget field="Elbow Angle" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1020" y="368"/>
+	</widget>
+	<widget field="gyro rate" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1021" y="343"/>
+	</widget>
+	<widget field="gyro heading" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="1015" y="315"/>
+	</widget>
+	<widget field="SendableChooser[0]" type="String Chooser" class="edu.wpi.first.smartdashboard.gui.elements.Chooser">
+		<location x="-3" y="2"/>
+	</widget>
+	<widget field="Set Shoulder Degrees" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="298" y="29"/>
+	</widget>
+	<widget field="Set Elbow Degrees" type="Number" class="edu.wpi.first.smartdashboard.gui.elements.TextBox">
+		<location x="301" y="4"/>
+	</widget>
+</dashboard>
+<live-window>
+</live-window>
+</xml>
