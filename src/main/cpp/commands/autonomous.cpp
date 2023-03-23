@@ -4,27 +4,10 @@
 
 using namespace AutoConstants;
 
-frc2::CommandPtr autos::SimpleAuto(DriveSubsystem* drive) {
-    return frc2::FunctionalCommand(
-            // Reset odometry on command start
-             [drive] { drive->ResetOdometry(frc::Pose2d{0_m, 0_m, 0_deg}); },
-             // Drive forward while the command is executing
-             [drive] {drive->Drive(-0.1_mps, 0_mps, 0_rad_per_s, false, true);},
-             // stop driving
-             [drive](bool interrupted) {drive->Drive(0_mps, 0_mps, 0_rad_per_s, false, true);},
-             //distance to drive
-             [drive] {
-               return drive->GetPose().X() <= 1_m;
-             },
-             // Requires the drive subsystem
-             {drive}).ToPtr();
-}
-
-frc2::CommandPtr autos::PlaceConeAndDriveBack(DriveSubsystem* drive, ArmSubsystem* arm, IntakeSubsystem* intake) {
+frc2::CommandPtr autos::PlaceCone(DriveSubsystem* drive, ArmSubsystem* arm, IntakeSubsystem* intake) {
     return frc2::cmd::Sequence(
         arm->highDropPosition(),
-        frc2::cmd::Wait(3.0_s).AsProxy().AndThen([intake] {intake->grabPlace(0.0, 0.3);}),
-        frc2::cmd::Wait(1.0_s).AsProxy().AndThen(arm->homePosition()),
+        frc2::cmd::Wait(2.0_s).AsProxy().AndThen(intake->autoGrabPlace(-0.3, 1.0_s)),
         //drive backward
         frc2::FunctionalCommand(
             // Reset odometry on command start
@@ -35,14 +18,15 @@ frc2::CommandPtr autos::PlaceConeAndDriveBack(DriveSubsystem* drive, ArmSubsyste
              [drive](bool interrupted) {drive->Drive(0_mps, 0_mps, 0_rad_per_s, false, true);},
              //distance to drive
              [drive] {
-              frc::SmartDashboard::PutNumber("gyro heading", drive->GetPose().X().value());
-              return drive->GetPose().X() <= -1.0_m;
+              frc::SmartDashboard::PutNumber("distance", drive->GetPose().X().value());
+              return drive->GetPose().X() <= -0.5_m;
                
              },
              // Requires the drive subsystem
              {drive}).ToPtr(),
+        arm->homePosition(),
         //turn 180 degrees
-        frc2::FunctionalCommand(
+        frc2::cmd::Wait(0.5_s).AsProxy().AndThen(frc2::FunctionalCommand(
             // Reset odometry on command start
              [drive] { drive->ResetOdometry(frc::Pose2d{0_m, 0_m, 0_deg}); },
              // Drive  while the command is executing
@@ -55,20 +39,83 @@ frc2::CommandPtr autos::PlaceConeAndDriveBack(DriveSubsystem* drive, ArmSubsyste
                return drive->GetPose().Rotation().Degrees() >= 148.0_deg;
              },
              // Requires the drive subsystem
-             {drive}).ToPtr(),
-        //drive forward
+             {drive}).ToPtr())
+    );
+}
+
+frc2::CommandPtr autos::PlaceConeAndDock(DriveSubsystem* drive, ArmSubsystem* arm, IntakeSubsystem* intake) {
+    return frc2::cmd::Sequence(
+        arm->highDropPosition(),
+        frc2::cmd::Wait(2.0_s).AsProxy().AndThen(intake->autoGrabPlace(-0.3, 1.0_s)),
+        //drive backward
         frc2::FunctionalCommand(
             // Reset odometry on command start
              [drive] { drive->ResetOdometry(frc::Pose2d{0_m, 0_m, 0_deg}); },
              // Drive while the command is executing
-             [drive] {drive->Drive(0.1_mps, 0_mps, 0_rad_per_s, false, true);},
+             [drive] {drive->Drive(-0.1_mps, 0_mps, 0_rad_per_s, false, true);},
              // stop driving
              [drive](bool interrupted) {drive->Drive(0_mps, 0_mps, 0_rad_per_s, false, true);},
              //distance to drive
              [drive] {
-               return drive->GetPose().X() <= 1_m;
+              frc::SmartDashboard::PutNumber("distance", drive->GetPose().X().value());
+              return drive->GetPose().X() <= -0.5_m;
+             },
+             // Requires the drive subsystem
+             {drive}).ToPtr(),
+        arm->homePosition(),
+        //drive backward to charge station
+        frc2::FunctionalCommand(
+            // Reset odometry on command start
+             [drive] { drive->ResetOdometry(frc::Pose2d{0_m, 0_m, 0_deg}); },
+             // Drive while the command is executing
+             [drive] {drive->Drive(-0.1_mps, 0_mps, 0_rad_per_s, false, true);},
+             // stop driving
+             [drive](bool interrupted) {drive->Drive(0_mps, 0_mps, 0_rad_per_s, false, true);},
+             //distance to drive
+             [drive] {
+              frc::SmartDashboard::PutNumber("distance", drive->GetPose().X().value());
+              return drive->GetPose().X() <= -1.5_m;
              },
              // Requires the drive subsystem
              {drive}).ToPtr()
+    );
+}
+
+frc2::CommandPtr autos::PlaceConeAndBalance(DriveSubsystem* drive, ArmSubsystem* arm, IntakeSubsystem* intake) {
+    return frc2::cmd::Sequence(
+        arm->highDropPosition(),
+        frc2::cmd::Wait(2.0_s).AsProxy().AndThen(intake->autoGrabPlace(-0.3, 1.0_s)),
+        //drive backward
+        frc2::FunctionalCommand(
+            // Reset odometry on command start
+             [drive] { drive->ResetOdometry(frc::Pose2d{0_m, 0_m, 0_deg}); },
+             // Drive while the command is executing
+             [drive] {drive->Drive(-0.1_mps, 0_mps, 0_rad_per_s, false, true);},
+             // stop driving
+             [drive](bool interrupted) {drive->Drive(0_mps, 0_mps, 0_rad_per_s, false, true);},
+             //distance to drive
+             [drive] {
+              frc::SmartDashboard::PutNumber("distance", drive->GetPose().X().value());
+              return drive->GetPose().X() <= -0.5_m;
+             },
+             // Requires the drive subsystem
+             {drive}).ToPtr(),
+        arm->homePosition(),
+        //drive backward to charge station
+        frc2::FunctionalCommand(
+            // Reset odometry on command start
+             [drive] { drive->ResetOdometry(frc::Pose2d{0_m, 0_m, 0_deg}); },
+             // Drive while the command is executing
+             [drive] {drive->Drive(-0.2_mps, 0_mps, 0_rad_per_s, false, true);},
+             // stop driving
+             [drive](bool interrupted) {drive->Drive(0_mps, 0_mps, 0_rad_per_s, false, true);},
+             //distance to drive
+             [drive] {
+              frc::SmartDashboard::PutNumber("distance", drive->GetPose().X().value());
+              return (drive->GetPose().X() <= -1.5_m || abs(drive->GetRoll()) > 8);
+             },
+             // Requires the drive subsystem
+             {drive}).ToPtr(),
+        frc2::cmd::Run([drive] {drive->autoBalance();})
     );
 }

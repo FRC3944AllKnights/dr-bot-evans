@@ -59,6 +59,11 @@ class DriveSubsystem : public frc2::SubsystemBase {
   void ResetEncoders();
 
   /**
+   * Translates NaxV gyro values to the expected IMU format
+  */
+ double getNavXHeading() const;
+
+  /**
    * Sets the drive MotorControllers to a power from -1 to 1.
    */
   void SetModuleStates(wpi::array<frc::SwerveModuleState, 4> desiredStates);
@@ -69,6 +74,16 @@ class DriveSubsystem : public frc2::SubsystemBase {
    * @return the robot's heading in degrees, from 180 to 180
    */
   units::degree_t GetHeading() const;
+
+  /**
+   * Returns the roll of the robot, from -180 to 180
+  */
+  double GetRoll();
+
+  /**
+   * Autobalances on the target (must be facing perpendicular to target to work)
+  */
+  void autoBalance();
 
   /**
    * Zeroes the heading of the robot.

@@ -26,7 +26,7 @@ DriveSubsystem::DriveSubsystem()
       m_rearRight{kRearRightDrivingCanId, kRearRightTurningCanId,
                   kRearRightChassisAngularOffset},
       m_odometry{kDriveKinematics,
-                 frc::Rotation2d(units::degree_t{-ahrs.GetAngle()}),
+                 frc::Rotation2d(units::degree_t{getNavXHeading()}),
                  {m_frontLeft.GetPosition(), m_frontRight.GetPosition(),
                   m_rearLeft.GetPosition(), m_rearRight.GetPosition()},
                  frc::Pose2d{}} {}
@@ -35,9 +35,14 @@ frc2::CommandPtr DriveSubsystem::setSlowFactor(double slow){
   return frc2::cmd::RunOnce([this, slow] { this->slowFactor = slow; }, {this});
 }
 
+double DriveSubsystem::getNavXHeading() const{
+  //convert to robot reference frame and set initial offset
+  return -ahrs.GetAngle() + 180.0;
+}
+
 void DriveSubsystem::Periodic() {
   // Implementation of subsystem periodic method goes here.
-  m_odometry.Update(frc::Rotation2d(units::degree_t{-ahrs.GetAngle()}),
+  m_odometry.Update(frc::Rotation2d(units::degree_t{getNavXHeading()}),
                     {m_frontLeft.GetPosition(), m_rearLeft.GetPosition(),
                      m_frontRight.GetPosition(), m_rearRight.GetPosition()});
 }
@@ -53,7 +58,7 @@ void DriveSubsystem::Drive(units::meters_per_second_t xSpeed,
   double xSpeedCommanded;
   double ySpeedCommanded;
 
-  frc::SmartDashboard::PutNumber("gyro heading", -ahrs.GetAngle());
+  frc::SmartDashboard::PutNumber("gyro heading",getNavXHeading());
   frc::SmartDashboard::PutNumber("gyro rate", -ahrs.GetRate());
 
   if (rateLimit) {
@@ -123,7 +128,7 @@ void DriveSubsystem::Drive(units::meters_per_second_t xSpeed,
       fieldRelative
           ? frc::ChassisSpeeds::FromFieldRelativeSpeeds(
                 xSpeedDelivered, ySpeedDelivered, rotDelivered,
-                frc::Rotation2d(units::degree_t{-ahrs.GetAngle()}))
+                frc::Rotation2d(units::degree_t{getNavXHeading()}))
           : frc::ChassisSpeeds{xSpeedDelivered, ySpeedDelivered, rotDelivered});
 
   kDriveKinematics.DesaturateWheelSpeeds(&states, DriveConstants::kMaxSpeed);
@@ -165,7 +170,22 @@ void DriveSubsystem::ResetEncoders() {
 }
 
 units::degree_t DriveSubsystem::GetHeading() const {
-  return units::degree_t{-ahrs.GetAngle()};
+  return units::degree_t{getNavXHeading()};
+}
+
+double DriveSubsystem::GetRoll() {
+  return ahrs.GetRoll();
+}
+
+void DriveSubsystem::autoBalance() {
+  //extremely basic bang-bang controller that creeps forward or backward if charge station isn't level
+  if(GetRoll() > 2.0){
+    Drive(0.1_mps, 0_mps, 0_rad_per_s, false, false);
+  }else if(GetRoll() < -2.0){
+    Drive(-0.1_mps, 0_mps, 0_rad_per_s, false, false);
+  }else{
+    Drive(0_mps, 0_mps, 0_rad_per_s, false, false);
+  }
 }
 
 void DriveSubsystem::ZeroHeading() { ahrs.Reset(); }

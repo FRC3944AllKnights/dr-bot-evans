@@ -22,18 +22,18 @@
 namespace autos {
 
 /**
- * A simple auto that drives forward, then stops.
+ * Places a cone, then turns.
  */
-frc2::CommandPtr SimpleAuto(DriveSubsystem* drive);
+frc2::CommandPtr PlaceCone(DriveSubsystem* drive, ArmSubsystem* arm, IntakeSubsystem* intake);
 
 /**
- * A complex auto command that places a cone, then drives backward
+ * places a cone, then drives backward onto the ramp (doesn't do active balance)
  */
-frc2::CommandPtr PlaceConeAndDriveBack(DriveSubsystem* drive, ArmSubsystem* arm, IntakeSubsystem* intake);
+frc2::CommandPtr PlaceConeAndDock(DriveSubsystem* drive, ArmSubsystem* arm, IntakeSubsystem* intake);
 
 /**
  * Place a cone
 */
-frc2::CommandPtr PlaceCone(DriveSubsystem* drive, ArmSubsystem* arm, IntakeSubsystem* intake);
+frc2::CommandPtr PlaceConeAndBalance(DriveSubsystem* drive, ArmSubsystem* arm, IntakeSubsystem* intake);
 
 }  // namespace autos
