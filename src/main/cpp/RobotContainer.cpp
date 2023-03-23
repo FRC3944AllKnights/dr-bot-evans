@@ -28,8 +28,10 @@ using namespace DriveConstants;
 
 RobotContainer::RobotContainer() {
   // Initialize all of your commands and subsystems here
-  m_chooser.SetDefaultOption("Simple Auto", m_simpleAuto.get());
-  m_chooser.AddOption("Complex Auto", m_complexAuto.get());
+  m_chooser.SetDefaultOption("place cone", m_placeCone.get());
+  m_chooser.AddOption("place cone and dock", m_placeConeAndDock.get());
+  m_chooser.AddOption("place cone and balance", m_placeConeAndBalance.get());
+
 
   // Put the chooser on the dashboard
   frc::SmartDashboard::PutData(&m_chooser);
