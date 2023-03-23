@@ -107,17 +107,17 @@ frc2::CommandPtr autos::PlaceConeAndBalance(DriveSubsystem* drive, ArmSubsystem*
             // Reset odometry on command start
              [drive] { drive->ResetOdometry(frc::Pose2d{0_m, 0_m, 0_deg}); },
              // Drive while the command is executing
-             [drive] {drive->Drive(-0.2_mps, 0_mps, 0_rad_per_s, false, true);},
+             [drive] {drive->Drive(-0.4_mps, 0_mps, 0_rad_per_s, false, true);},
              // stop driving and lock in place
              [drive](bool interrupted) {drive->Drive(0_mps, 0_mps, 0_rad_per_s, false, false);
                                         drive->SetX();},
              //distance to drive
              [drive] {
               frc::SmartDashboard::PutNumber("distance", drive->GetPose().X().value());
-              return (drive->GetPose().X() <= -1.5_m || abs(drive->GetRoll()) > 8);
+              return (drive->GetPose().X() <= -2.0_m || abs(drive->GetRoll()) < -8);
              },
              // Requires the drive subsystem
              {drive}).ToPtr(),
-        frc2::cmd::Run([drive] {drive->autoBalance();})
+        frc2::cmd::Run([drive] {drive->autoBalance();}).WithTimeout(30.0_s)
     );
 }

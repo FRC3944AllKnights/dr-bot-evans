@@ -59,6 +59,7 @@ void DriveSubsystem::Drive(units::meters_per_second_t xSpeed,
   double ySpeedCommanded;
 
   frc::SmartDashboard::PutNumber("gyro heading",getNavXHeading());
+  frc::SmartDashboard::PutNumber("gyro roll",GetRoll());
   frc::SmartDashboard::PutNumber("gyro rate", -ahrs.GetRate());
 
   if (rateLimit) {
@@ -180,9 +181,9 @@ double DriveSubsystem::GetRoll() {
 void DriveSubsystem::autoBalance() {
   //extremely basic bang-bang controller that creeps forward or backward if charge station isn't level
   if(GetRoll() > 2.0){
-    Drive(0.1_mps, 0_mps, 0_rad_per_s, false, false);
+    Drive(0.2_mps, 0_mps, 0_rad_per_s, false, false);
   }else if(GetRoll() < -2.0){
-    Drive(-0.1_mps, 0_mps, 0_rad_per_s, false, false);
+    Drive(-0.2_mps, 0_mps, 0_rad_per_s, false, false);
   }else{
     Drive(0_mps, 0_mps, 0_rad_per_s, false, false);
   }
