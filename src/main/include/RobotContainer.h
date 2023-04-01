@@ -49,7 +49,7 @@ class RobotContainer {
 
   frc2::CommandPtr m_placeCone = autos::PlaceCone(&m_drive, &m_arm, &m_intake);
   frc2::CommandPtr m_placeConeAndDock = autos::PlaceConeAndDock(&m_drive, &m_arm, &m_intake);
-  frc2::CommandPtr m_placeConeAndBalance = autos::PlaceConeAndDock(&m_drive, &m_arm, &m_intake);
+  frc2::CommandPtr m_placeConeAndBalance = autos::PlaceConeAndBalance(&m_drive, &m_arm, &m_intake);
 
   // The chooser for the autonomous routines
   frc::SendableChooser<frc2::Command*> m_chooser;

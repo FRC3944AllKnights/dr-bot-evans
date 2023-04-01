@@ -122,7 +122,7 @@ constexpr units::ampere_t kTurningMotorCurrentLimit = 20_A;
 }  // namespace ModuleConstants
 
 namespace AutoConstants {
-constexpr auto kMaxSpeed = 0.5_mps;
+constexpr auto kMaxSpeed = 2.0_mps;
 constexpr auto kMaxAcceleration = 1_mps_sq;
 constexpr auto kMaxAngularSpeed = 1.142_rad_per_s;
 constexpr auto kMaxAngularAcceleration = 1.142_rad_per_s_sq;
@@ -142,7 +142,7 @@ constexpr double kDriveDeadband = 0.05;
 
 namespace ArmConstants {
 //shoulder pid constants
-constexpr double shoulderP = 5e-5;
+constexpr double shoulderP = 7.5e-5;
 constexpr double shoulderI = 5e-7;
 constexpr double shoulderD = 0;
 constexpr double shoulderFF = 0.000156;
@@ -150,7 +150,7 @@ constexpr double shoulderMinOutput = -1;
 constexpr double shoulderMaxOutput = 1;
 
 //shoulder smartMotion constants
-constexpr double shoulderMaxVel = 2000;
+constexpr double shoulderMaxVel = 2500;
 constexpr double shoulderMinVel = 0;
 constexpr double shoulderMaxAcc = 1500;
 constexpr double shoulderAllErr = 0;

@@ -82,6 +82,8 @@ void RobotContainer::ConfigureButtonBindings() {
     m_driverController.Start().OnTrue(new frc2::InstantCommand([this] { m_drive.SetX(); }, {&m_drive}));
     m_driverController.Start().OnTrue(new frc2::InstantCommand([this] { m_arm.init(); }, {&m_arm}));
 
+    m_driverController.Back().OnTrue(new frc2::InstantCommand([this] { m_drive.ZeroHeading(); }, {&m_drive}));
+
     //gamepiece placing positions
     m_driverController.B().OnTrue(m_arm.testArm());
     m_driverController.B().OnTrue(m_drive.setSlowFactor(0.1));

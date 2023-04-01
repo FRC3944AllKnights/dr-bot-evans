@@ -48,9 +48,11 @@ void ArmSubsystem::setCube(){
 void ArmSubsystem::setElbowFast(){
     elbow_pidController.SetSmartMotionMaxVelocity(elbowMaxVel);
     shoulder_pidController.SetSmartMotionMaxVelocity(1000);
+    elbow_pidController.SetSmartMotionMaxAccel(elbowMaxAcc);  
 }
 
 void ArmSubsystem::setElbowSlow(){
+    elbow_pidController.SetSmartMotionMaxAccel(1500);
     elbow_pidController.SetSmartMotionMaxVelocity(1000);
     shoulder_pidController.SetSmartMotionMaxVelocity(shoulderMaxVel);
 }
@@ -119,8 +121,8 @@ void ArmSubsystem::getSetStates(){
     frc::SmartDashboard::PutNumber("Elbow Angle", getElbowAngle());
     frc::SmartDashboard::PutNumber("Shoulder Angle", getShoulderAngle());
 
-    desired_elbow_angle = frc::SmartDashboard::GetNumber("Set Elbow Degrees", 0);
-    desired_shoulder_angle = frc::SmartDashboard::GetNumber("Set Shoulder Degrees", 0);
+    desired_elbow_angle = frc::SmartDashboard::GetNumber("Set Elbow Degrees", 70.0);
+    desired_shoulder_angle = frc::SmartDashboard::GetNumber("Set Shoulder Degrees", 0.0);
 }
 
 frc2::CommandPtr ArmSubsystem::homePosition(){
@@ -153,7 +155,7 @@ frc2::CommandPtr ArmSubsystem::midDropPosition(){
 };
 
 frc2::CommandPtr ArmSubsystem::highDropPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(90.0, 130.0).Unwrap(), moveArmCommand(60.0, 93.0).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(96.0, 129.0).Unwrap(), moveArmCommand(60.0, 93.0).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 
