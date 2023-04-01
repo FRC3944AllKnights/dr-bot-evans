@@ -11,6 +11,7 @@ class IntakeSubsystem : public frc2::SubsystemBase {
         void grabPlace(double LT, double RT); //LT, RT
         void setCube();
         void setCone();
+        void stopSuck();
 
         /**
          * runs at a set speed repeatedly until timeout condition
@@ -20,4 +21,8 @@ class IntakeSubsystem : public frc2::SubsystemBase {
     private:
         double gamePieceMultiplier = 0.5;
         rev::CANSparkMax intake_motor{3, rev::CANSparkMax::MotorType::kBrushless};
+
+        rev::SparkMaxRelativeEncoder intake_encoder = intake_motor.GetEncoder();
+
 };
+

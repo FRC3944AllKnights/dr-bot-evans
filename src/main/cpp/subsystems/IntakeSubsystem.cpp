@@ -25,3 +25,10 @@ void IntakeSubsystem::setCube(){
 void IntakeSubsystem::setCone(){
     gamePieceMultiplier = 0.5;
 }
+
+void IntakeSubsystem::stopSuck(){
+    if(intake_encoder.GetPosition() == 1.0){
+
+    }
+
+}
