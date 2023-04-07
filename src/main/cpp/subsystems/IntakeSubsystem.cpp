@@ -35,13 +35,17 @@ void IntakeSubsystem::stopSuck(double intakeSpeed){
 
         currentInput = -1;
     }
+    else {
+        currentInput = 0;
+    }
+
     
     currentPosition = intake_encoder.GetPosition();
     double positionDifference = currentPosition - previousPosition;
 
     frc::SmartDashboard::PutNumber("Position Difference", positionDifference);
 
-    if((positionDifference <= 0.1 and positionDifference > 0) or (positionDifference >= -0.1 and positionDifference < 0)){
+    if((positionDifference <= 0.1 and positionDifference >= -0.1 ) and currentInput == previousInput){
 
         intake_motor.Set(0.0);
 
