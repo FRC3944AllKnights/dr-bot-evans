@@ -21,14 +21,15 @@ class IntakeSubsystem : public frc2::SubsystemBase {
 
     private:
         double gamePieceMultiplier = 0.5;
-        rev::CANSparkMax intake_motor{3, rev::CANSparkMax::MotorType::kBrushless};
-
         double previousPosition = 10;
         double currentPosition = 0;
         double previousInput = 0;
         double currentInput = 0;
-
+        double setPosition = 0;
+        int loops = 0;
+        bool positionLatch = true;
+        rev::CANSparkMax intake_motor{3, rev::CANSparkMax::MotorType::kBrushless};
         rev::SparkMaxRelativeEncoder intake_encoder = intake_motor.GetEncoder();
-
+        rev::SparkMaxPIDController intake_pidController = intake_motor.GetPIDController();
 };
 
