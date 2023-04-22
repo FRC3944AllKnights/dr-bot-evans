@@ -13,6 +13,7 @@ class IntakeSubsystem : public frc2::SubsystemBase {
         void setCube();
         void setCone();
         void stopSuck(double intakeSpeed);
+        
 
         /**
          * runs at a set speed repeatedly until timeout condition

@@ -33,6 +33,7 @@ void IntakeSubsystem::setCone(){
 }
     
 void IntakeSubsystem::stopSuck(double intakeSpeed){
+    intake_pidController.SetReference(setPosition, rev::CANSparkMax::ControlType::kPosition);
     if(intakeSpeed > 0){
 
         currentInput = 1;
@@ -67,9 +68,12 @@ void IntakeSubsystem::stopSuck(double intakeSpeed){
      
     }
     else{
-        intake_motor.Set(intakeSpeed);
         frc::SmartDashboard::PutNumber("If negative, position control", 1);
+        // intake_motor.Set(intakeSpeed);
+        
     }
+
+    // frc::SmartDashboard::PutNumber("Motor speed", intake_motor.Get());
 
     previousPosition = currentPosition;
     previousInput = currentInput;
