@@ -1,13 +1,16 @@
 #include "subsystems/IntakeSubsystem.h"
-
+using namespace IntakeConstants;
 IntakeSubsystem::IntakeSubsystem(){
-        // set PID coefficients and smartmotion values of shoulder
-        intake_pidController.SetP(1e-4);
-        intake_pidController.SetI(0.0);
-        intake_pidController.SetD(0.0);
-        intake_pidController.SetFF(0.000156);
 }
-
+void IntakeSubsystem::init(){
+        // set PID coefficients and smartmotion values of shoulder
+        intake_pidController.SetP(intakeP);
+        intake_pidController.SetI(intakeI);
+        intake_pidController.SetD(intakeD);
+        intake_pidController.SetFF(intakeFF);
+        intake_pidController.SetIZone(intakeIZone);
+        intake_pidController.SetOutputRange(intakeMinOutput, intakeMaxOutput);
+}
 void IntakeSubsystem::grabPlace(double LT, double RT){
     if(LT > 0.1) {
         stopSuck(gamePieceMultiplier*LT);
@@ -69,11 +72,11 @@ void IntakeSubsystem::stopSuck(double intakeSpeed){
     }
     else{
         frc::SmartDashboard::PutNumber("If negative, position control", 1);
-        // intake_motor.Set(intakeSpeed);
+        intake_motor.Set(intakeSpeed);
         
     }
 
-    // frc::SmartDashboard::PutNumber("Motor speed", intake_motor.Get());
+    frc::SmartDashboard::PutNumber("Motor speed", intake_motor.Get());
 
     previousPosition = currentPosition;
     previousInput = currentInput;

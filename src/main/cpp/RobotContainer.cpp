@@ -76,6 +76,7 @@ RobotContainer::RobotContainer() {
 
 void RobotContainer::initAllSubsystems() {
     m_arm.init();
+    m_intake.init();
 }
 
 void RobotContainer::ConfigureButtonBindings() {

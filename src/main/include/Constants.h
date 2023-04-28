@@ -169,3 +169,14 @@ constexpr double elbowMinVel = 0;
 constexpr double elbowMaxAcc = 2000;
 constexpr double elbowAllErr = 0;
 }
+
+namespace IntakeConstants {
+//intake pid constants
+constexpr double intakeP = 5e-3;
+constexpr double intakeI = 0;
+constexpr double intakeD = 0;
+constexpr double intakeIZone = 0;
+constexpr double intakeFF = 0;
+constexpr double intakeMaxOutput = 1;
+constexpr double intakeMinOutput = -1;
+}
