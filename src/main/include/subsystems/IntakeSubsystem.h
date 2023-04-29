@@ -21,7 +21,7 @@ class IntakeSubsystem : public frc2::SubsystemBase {
         frc2::CommandPtr autoGrabPlace(double speed, units::second_t timeout);
 
     private:
-        double gamePieceMultiplier = 0.5;
+        double gamePieceMultiplier = 0.45;
         double previousPosition = 10;
         double currentPosition = 0;
         double previousInput = 0;

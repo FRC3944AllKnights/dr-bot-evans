@@ -173,7 +173,7 @@ constexpr double elbowAllErr = 0;
 namespace IntakeConstants {
 //intake pid constants
 constexpr double intakeP = 5e-3;
-constexpr double intakeI = 0;
+constexpr double intakeI = 1e-4;
 constexpr double intakeD = 0;
 constexpr double intakeIZone = 0;
 constexpr double intakeFF = 0;

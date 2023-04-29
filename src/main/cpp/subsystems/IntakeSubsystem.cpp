@@ -57,7 +57,7 @@ void IntakeSubsystem::stopSuck(double intakeSpeed){
     frc::SmartDashboard::PutNumber("Set Position", setPosition);
 
 
-    if(currentInput != previousInput){
+    if((currentInput != previousInput) and currentInput != 0){
         loops = 0;
         positionLatch = true;
     }
