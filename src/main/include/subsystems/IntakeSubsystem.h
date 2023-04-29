@@ -22,6 +22,7 @@ class IntakeSubsystem : public frc2::SubsystemBase {
 
     private:
         double gamePieceMultiplier = 0.45;
+        double gamePieceSpeed = gamePieceMultiplier;
         double previousPosition = 10;
         double currentPosition = 0;
         double previousInput = 0;

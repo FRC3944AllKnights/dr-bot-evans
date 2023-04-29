@@ -13,10 +13,10 @@ void IntakeSubsystem::init(){
 }
 void IntakeSubsystem::grabPlace(double LT, double RT){
     if(LT > 0.1) {
-        stopSuck(gamePieceMultiplier*LT);
+        stopSuck(gamePieceSpeed*LT);
     }
     else if(RT > 0.1){
-        stopSuck(-gamePieceMultiplier*RT);
+        stopSuck(-gamePieceSpeed*RT);
     }
     else{
         stopSuck(0.0);
@@ -29,10 +29,10 @@ frc2::CommandPtr IntakeSubsystem::autoGrabPlace(double speed, units::second_t ti
 }
 
 void IntakeSubsystem::setCube(){
-    gamePieceMultiplier = -0.5;
+    gamePieceSpeed = gamePieceMultiplier * -1;
 }
 void IntakeSubsystem::setCone(){
-    gamePieceMultiplier = 0.5;
+    gamePieceSpeed = gamePieceMultiplier * 1;
 }
     
 void IntakeSubsystem::stopSuck(double intakeSpeed){
