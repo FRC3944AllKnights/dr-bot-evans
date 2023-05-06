@@ -28,10 +28,10 @@ using namespace DriveConstants;
 
 RobotContainer::RobotContainer() {
   // Initialize all of your commands and subsystems here
-  m_chooser.SetDefaultOption("place cone", m_placeCone.get());
+ /* m_chooser.SetDefaultOption("place cone", m_placeCone.get());
   m_chooser.AddOption("place cone and dock", m_placeConeAndDock.get());
   m_chooser.AddOption("place cone and balance", m_placeConeAndBalance.get());
-
+*/
 
   // Put the chooser on the dashboard
   frc::SmartDashboard::PutData(&m_chooser);
@@ -66,57 +66,74 @@ RobotContainer::RobotContainer() {
       {&m_intake}
     ));
 
-    m_arm.SetDefaultCommand(frc2::RunCommand(
+    /*m_arm.SetDefaultCommand(frc2::RunCommand(
         [this] {
             m_arm.getSetStates();
         },
         {&m_arm}
-    ));
+    ));*/
 }
 
 void RobotContainer::initAllSubsystems() {
-    m_arm.init();
+    //m_arm.init();
     m_intake.init();
 }
 
 void RobotContainer::ConfigureButtonBindings() {
     m_driverController.Start().OnTrue(new frc2::InstantCommand([this] { m_drive.SetX(); }, {&m_drive}));
-    m_driverController.Start().OnTrue(new frc2::InstantCommand([this] { m_arm.init(); }, {&m_arm}));
+    // m_driverController.Start().OnTrue(new frc2::InstantCommand([this] { m_arm.init(); }, {&m_arm}));
 
     m_driverController.Back().OnTrue(new frc2::InstantCommand([this] { m_drive.ZeroHeading(); }, {&m_drive}));
 
     //gamepiece placing positions
-    m_driverController.B().OnTrue(m_arm.testArm());
+   // m_driverController.B().OnTrue(m_arm.testArm());
     m_driverController.B().OnTrue(m_drive.setSlowFactor(0.1));
 
-    m_driverController.A().OnTrue(m_arm.bottomDropPosition());
+    //  m_driverController.A().OnTrue(m_arm.bottomDropPosition());
     m_driverController.A().OnTrue(m_drive.setSlowFactor(0.1));
 
-    m_driverController.X().OnTrue(m_arm.midDropPosition());
+    // m_driverController.X().OnTrue(m_arm.midDropPosition());
     m_driverController.X().OnTrue(m_drive.setSlowFactor(0.1));
 
-    m_driverController.Y().OnTrue(m_arm.highDropPosition());
+    //  m_driverController.Y().OnTrue(m_arm.highDropPosition());
     m_driverController.Y().OnTrue(m_drive.setSlowFactor(0.1));
 
     //gamepiece pickup positions
-    frc2::POVButton(&m_driverController, 0).OnTrue(m_arm.trayPickupPosition());
+   // frc2::POVButton(&m_driverController, 0).OnTrue(m_arm.trayPickupPosition());
     frc2::POVButton(&m_driverController, 0).OnTrue(m_drive.setSlowFactor(0.1));
 
-    frc2::POVButton(&m_driverController, 270).OnTrue(m_arm.chutePickupPosition());
+   // frc2::POVButton(&m_driverController, 270).OnTrue(m_arm.chutePickupPosition());
     frc2::POVButton(&m_driverController, 270).OnTrue(m_drive.setSlowFactor(0.1));
 
-    frc2::POVButton(&m_driverController, 180).OnTrue(m_arm.floorPickupPosition());
+   // frc2::POVButton(&m_driverController, 180).OnTrue(m_arm.floorPickupPosition());
     frc2::POVButton(&m_driverController, 180).OnTrue(m_drive.setSlowFactor(0.25));
 
-    frc2::POVButton(&m_driverController, 90).OnTrue(m_arm.homePosition());
+   // frc2::POVButton(&m_driverController, 90).OnTrue(m_arm.homePosition());
     frc2::POVButton(&m_driverController, 90).OnTrue(m_drive.setSlowFactor(0.5));
 
     //choose gamepiece
-    m_driverController.LeftBumper().OnTrue(new frc2::InstantCommand([this] {m_arm.setCone(); }, {&m_arm}));
-    m_driverController.LeftBumper().OnTrue(new frc2::InstantCommand([this] {m_intake.setCone(); }, {&m_arm}));
+   // m_driverController.LeftBumper().OnTrue(new frc2::InstantCommand([this] {m_arm.setCone(); }, {&m_arm}));
+  //  m_driverController.LeftBumper().OnTrue(new frc2::InstantCommand([this] {m_intake.setCone(); }, {&m_arm}));
 
-    m_driverController.RightBumper().OnTrue(new frc2::InstantCommand([this] {m_arm.setCube(); }, {&m_arm}));
-    m_driverController.RightBumper().OnTrue(new frc2::InstantCommand([this] {m_intake.setCube(); }, {&m_arm}));
+   // m_driverController.RightBumper().OnTrue(new frc2::InstantCommand([this] {m_arm.setCube(); }, {&m_arm}));
+   // m_driverController.RightBumper().OnTrue(new frc2::InstantCommand([this] {m_intake.setCube(); }, {&m_arm}));
+
+     // Move the arm to 2 radians above horizontal when the 'A' button is pressed.
+  m_driverController.A().OnTrue(frc2::cmd::RunOnce(
+      [this] {
+        m_motion.SetGoal(-20_rad);
+        m_motion.Enable();
+      },
+      {&m_motion}));
+
+  // Move the arm to neutral position when the 'B' button is pressed.
+ 
+  m_driverController.B().OnTrue(frc2::cmd::RunOnce(
+      [this] {
+        m_motion.SetGoal(0_rad);
+        m_motion.Enable();
+      },
+      {&m_motion}));
 
 }
 

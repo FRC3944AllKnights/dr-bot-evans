@@ -27,31 +27,12 @@ class MotionControlArmSubsystem : public frc2::ProfiledPIDSubsystem<units::radia
   units::radian_t GetMeasurement() override;
 
  private:
-  frc::PWMSparkMax m_motor;
-  frc::Encoder m_encoder;
+  rev::CANSparkMax elbow_motor{2, rev::CANSparkMax::MotorType::kBrushless};
+  rev::SparkMaxRelativeEncoder elbow_encoder = elbow_motor.GetEncoder();
   frc::ArmFeedforward m_feedforward;
 };
 
-namespace DriveConstants {
-constexpr int kLeftMotor1Port = 0;
-constexpr int kLeftMotor2Port = 1;
-constexpr int kRightMotor1Port = 2;
-constexpr int kRightMotor2Port = 3;
-
-constexpr int kLeftEncoderPorts[]{0, 1};
-constexpr int kRightEncoderPorts[]{2, 3};
-constexpr bool kLeftEncoderReversed = false;
-constexpr bool kRightEncoderReversed = true;
-
-constexpr int kEncoderCPR = 1024;
-constexpr double kWheelDiameterInches = 6;
-constexpr double kEncoderDistancePerPulse =
-    // Assumes the encoders are directly mounted on the wheel shafts
-    (kWheelDiameterInches * std::numbers::pi) /
-    static_cast<double>(kEncoderCPR);
-}  // namespace DriveConstants
-
-namespace ArmConstants {
+namespace MotionArmConstants {
 constexpr int kMotorPort = 4;
 
 constexpr double kP = 1;
@@ -76,7 +57,7 @@ constexpr auto kEncoderDistancePerPulse =
 constexpr auto kArmOffset = 0.5_rad;
 }  // namespace ArmConstants
 
-namespace AutoConstants {
+/*namespace AutoConstants {
 constexpr auto kAutoTimeoutSeconds = 12_s;
 constexpr auto kAutoShootTimeSeconds = 7_s;
 }  // namespace AutoConstants
@@ -84,4 +65,4 @@ constexpr auto kAutoShootTimeSeconds = 7_s;
 namespace OIConstants {
 constexpr int kDriverControllerPort = 0;
 }  // namespace OIConstants
-
+*/
