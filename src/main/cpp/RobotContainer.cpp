@@ -121,7 +121,7 @@ void RobotContainer::ConfigureButtonBindings() {
      // Move the arm to 2 radians above horizontal when the 'A' button is pressed.
   m_driverController.A().OnTrue(frc2::cmd::RunOnce(
       [this] {
-        m_motion.SetGoal(-20_rad);
+        m_motion.SetGoal(-1_rad);
         m_motion.Enable();
       },
       {&m_motion}));

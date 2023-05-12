@@ -30,6 +30,8 @@ class MotionControlArmSubsystem : public frc2::ProfiledPIDSubsystem<units::radia
   rev::CANSparkMax elbow_motor{2, rev::CANSparkMax::MotorType::kBrushless};
   rev::SparkMaxRelativeEncoder elbow_encoder = elbow_motor.GetEncoder();
   frc::ArmFeedforward m_feedforward;
+  const double elbowGearRatio = 25.0*60.0/16.0;
+  
 };
 
 namespace MotionArmConstants {
@@ -46,11 +48,6 @@ constexpr auto kA = 0.1_V * 1_s * 1_s / 1_rad;
 
 constexpr auto kMaxVelocity = 3_rad_per_s;
 constexpr auto kMaxAcceleration = 10_rad / (1_s * 1_s);
-
-constexpr int kEncoderPorts[]{4, 5};
-constexpr int kEncoderPPR = 256;
-constexpr auto kEncoderDistancePerPulse =
-    2.0_rad * std::numbers::pi / kEncoderPPR;
 
 // The offset of the arm from the horizontal in its neutral position,
 // measured from the horizontal

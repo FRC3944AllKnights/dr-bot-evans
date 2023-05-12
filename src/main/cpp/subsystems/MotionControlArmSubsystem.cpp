@@ -24,5 +24,5 @@ void MotionControlArmSubsystem::UseOutput(double output, State setpoint) {
 }
 
 units::radian_t MotionControlArmSubsystem::GetMeasurement() {
-  return units::radian_t{elbow_encoder.GetPosition() * ( 2 * 3.1415926535 ) } + kArmOffset;
+  return units::radian_t{elbow_encoder.GetPosition() / elbowGearRatio * ( 2 * 3.1415926535 ) } + kArmOffset;
 }
