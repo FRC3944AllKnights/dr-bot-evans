@@ -20,24 +20,26 @@ class MotionControlArmSubsystem : public frc2::ProfiledPIDSubsystem<units::radia
   using State = frc::TrapezoidProfile<units::radians>::State;
 
  public:
-  MotionControlArmSubsystem();
+  MotionControlArmSubsystem(int canID, double gearRatio);
 
   void UseOutput(double output, State setpoint) override;
 
   units::radian_t GetMeasurement() override;
 
  private:
-  rev::CANSparkMax elbow_motor{2, rev::CANSparkMax::MotorType::kBrushless};
-  rev::SparkMaxRelativeEncoder elbow_encoder = elbow_motor.GetEncoder();
+  rev::CANSparkMax motor;
+  rev::SparkMaxRelativeEncoder encoder = motor.GetEncoder();
   frc::ArmFeedforward m_feedforward;
-  const double elbowGearRatio = 25.0*60.0/16.0;
+  double motorGearRatio;
   
 };
 
 namespace MotionArmConstants {
 constexpr int kMotorPort = 4;
 
-constexpr double kP = 1;
+constexpr double kP = 4;
+constexpr double kI = 0.2;
+constexpr double kD = 0;
 
 // These are fake gains; in actuality these must be determined individually for
 // each robot

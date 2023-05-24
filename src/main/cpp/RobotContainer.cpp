@@ -121,21 +121,27 @@ void RobotContainer::ConfigureButtonBindings() {
      // Move the arm to 2 radians above horizontal when the 'A' button is pressed.
   m_driverController.A().OnTrue(frc2::cmd::RunOnce(
       [this] {
-        m_motion.SetGoal(-1_rad);
-        m_motion.Enable();
+        m_elbow.SetGoal(-0.7_rad);
+        m_elbow.Enable();
+        m_shoulder.SetGoal(-0.7_rad);
+        m_shoulder.Enable();
       },
-      {&m_motion}));
+      {&m_elbow, &m_shoulder}));
 
   // Move the arm to neutral position when the 'B' button is pressed.
  
   m_driverController.B().OnTrue(frc2::cmd::RunOnce(
       [this] {
-        m_motion.SetGoal(0_rad);
-        m_motion.Enable();
+        m_elbow.SetGoal(0_rad);
+        m_elbow.Enable();
+        m_shoulder.SetGoal(0_rad);
+        m_shoulder.Enable();
+        
       },
-      {&m_motion}));
-
+      {&m_elbow, &m_shoulder}));
 }
+
+   
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
     return m_chooser.GetSelected();

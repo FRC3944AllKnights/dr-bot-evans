@@ -154,6 +154,8 @@ constexpr double shoulderMaxVel = 2500;
 constexpr double shoulderMinVel = 0;
 constexpr double shoulderMaxAcc = 1500;
 constexpr double shoulderAllErr = 0;
+constexpr double shoulderGearRatio = 64.0;
+
 
 //elbow pid constants
 constexpr double elbowP = 5e-5;
@@ -168,6 +170,7 @@ constexpr double elbowMaxVel = 4000;
 constexpr double elbowMinVel = 0;
 constexpr double elbowMaxAcc = 2000;
 constexpr double elbowAllErr = 0;
+constexpr double elbowGearRatio = 25.0*60.0/16.0;
 }
 
 namespace IntakeConstants {
