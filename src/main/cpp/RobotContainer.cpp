@@ -119,6 +119,20 @@ void RobotContainer::ConfigureButtonBindings() {
    // m_driverController.RightBumper().OnTrue(new frc2::InstantCommand([this] {m_intake.setCube(); }, {&m_arm}));
 
      // Move the arm to 2 radians above horizontal when the 'A' button is pressed.
+  frc2::POVButton(&m_driverController, 270).OnTrue(frc2::cmd::RunOnce(
+      [this] {
+        m_elbow.SetGoal(-0.7_rad);
+        m_elbow.Enable();
+      },
+      {&m_elbow, &m_shoulder}));
+
+  frc2::POVButton(&m_driverController, 90).OnTrue(frc2::cmd::RunOnce(
+      [this] {
+        m_shoulder.SetGoal(-0.7_rad);
+        m_shoulder.Enable();
+      },
+      {&m_elbow, &m_shoulder}));
+    
   m_driverController.A().OnTrue(frc2::cmd::RunOnce(
       [this] {
         m_elbow.SetGoal(-0.7_rad);

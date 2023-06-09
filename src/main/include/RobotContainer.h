@@ -47,8 +47,8 @@ class RobotContainer {
   DriveSubsystem m_drive;
   // ArmSubsystem m_arm;
   IntakeSubsystem m_intake;
-  MotionControlArmSubsystem m_elbow{2, ArmConstants::elbowGearRatio};
-  MotionControlArmSubsystem m_shoulder{1, ArmConstants::shoulderGearRatio};
+  MotionControlArmSubsystem m_elbow{2, 4, 0.2, 0, ArmConstants::elbowGearRatio};
+  MotionControlArmSubsystem m_shoulder{1, 6, 0.2, 0, ArmConstants::shoulderGearRatio};
 
 
   //frc2::CommandPtr m_placeCone = autos::PlaceCone(&m_drive, &m_arm, &m_intake);

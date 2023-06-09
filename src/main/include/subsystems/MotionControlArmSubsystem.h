@@ -20,7 +20,7 @@ class MotionControlArmSubsystem : public frc2::ProfiledPIDSubsystem<units::radia
   using State = frc::TrapezoidProfile<units::radians>::State;
 
  public:
-  MotionControlArmSubsystem(int canID, double gearRatio);
+  MotionControlArmSubsystem(int canID, double kP, double kI, double kD, double gearRatio);
 
   void UseOutput(double output, State setpoint) override;
 
@@ -37,9 +37,9 @@ class MotionControlArmSubsystem : public frc2::ProfiledPIDSubsystem<units::radia
 namespace MotionArmConstants {
 constexpr int kMotorPort = 4;
 
-constexpr double kP = 4;
-constexpr double kI = 0.2;
-constexpr double kD = 0;
+constexpr double kAp = 4;
+constexpr double kAi = 0.2;
+constexpr double kAd = 0;
 
 // These are fake gains; in actuality these must be determined individually for
 // each robot

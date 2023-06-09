@@ -6,7 +6,7 @@
 using namespace MotionArmConstants;
 using State = frc::TrapezoidProfile<units::radians>::State;
 
-MotionControlArmSubsystem::MotionControlArmSubsystem(int canID, double gearRatio)
+MotionControlArmSubsystem::MotionControlArmSubsystem(int canID, double kP, double kI, double kD, double gearRatio)
     : frc2::ProfiledPIDSubsystem<units::radians>(frc::ProfiledPIDController<units::radians>(
               kP, kI, kD, {kMaxVelocity, kMaxAcceleration})),
       m_feedforward(kS, kG, kV, kA), 
