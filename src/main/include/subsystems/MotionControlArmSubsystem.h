@@ -11,6 +11,8 @@
 #include <units/angular_velocity.h>
 #include <units/time.h>
 #include <units/voltage.h>
+#include <frc/SmartDashboard/SmartDashboard.h>
+
 
 
 /**

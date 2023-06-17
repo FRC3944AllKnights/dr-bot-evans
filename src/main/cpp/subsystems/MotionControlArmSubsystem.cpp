@@ -22,6 +22,11 @@ void MotionControlArmSubsystem::UseOutput(double output, State setpoint) {
       m_feedforward.Calculate(setpoint.position, setpoint.velocity);
   // Add the feedforward to the PID output to get the motor output
   motor.SetVoltage(units::volt_t{output} + feedforward);
+
+  std::string id = std::to_string(motorGearRatio);
+   frc::SmartDashboard::PutNumber("motor " + id + " current position", encoder.GetPosition());
+
+
 }
 
 units::radian_t MotionControlArmSubsystem::GetMeasurement() {
