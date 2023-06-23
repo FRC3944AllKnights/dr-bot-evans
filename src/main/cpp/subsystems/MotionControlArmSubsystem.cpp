@@ -16,17 +16,17 @@ MotionControlArmSubsystem::MotionControlArmSubsystem(int canID, double kP, doubl
   SetGoal(State{kArmOffset, 0_rad_per_s});
 }
 
+void MotionControlArmSubsystem::GetArmPosition(){
+  std::string id = std::to_string(motorGearRatio);
+  frc::SmartDashboard::PutNumber("motor " + id + " current position", encoder.GetPosition());
+}
+
 void MotionControlArmSubsystem::UseOutput(double output, State setpoint) {
   // Calculate the feedforward from the sepoint
   units::volt_t feedforward =
       m_feedforward.Calculate(setpoint.position, setpoint.velocity);
   // Add the feedforward to the PID output to get the motor output
   motor.SetVoltage(units::volt_t{output} + feedforward);
-
-  std::string id = std::to_string(motorGearRatio);
-   frc::SmartDashboard::PutNumber("motor " + id + " current position", encoder.GetPosition());
-
-
 }
 
 units::radian_t MotionControlArmSubsystem::GetMeasurement() {

@@ -28,11 +28,15 @@ class MotionControlArmSubsystem : public frc2::ProfiledPIDSubsystem<units::radia
 
   units::radian_t GetMeasurement() override;
 
+  void GetArmPosition();
+
+  double motorGearRatio;
+  
  private:
   rev::CANSparkMax motor;
   rev::SparkMaxRelativeEncoder encoder = motor.GetEncoder();
   frc::ArmFeedforward m_feedforward;
-  double motorGearRatio;
+  
   
 };
 
@@ -55,7 +59,7 @@ constexpr auto kMaxAcceleration = 10_rad / (1_s * 1_s);
 
 // The offset of the arm from the horizontal in its neutral position,
 // measured from the horizontal
-constexpr auto kArmOffset = 0.5_rad;
+constexpr auto kArmOffset = 0_rad;
 }  // namespace ArmConstants
 
 /*namespace AutoConstants {

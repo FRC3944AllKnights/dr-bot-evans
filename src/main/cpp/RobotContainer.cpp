@@ -66,6 +66,21 @@ RobotContainer::RobotContainer() {
       {&m_intake}
     ));
 
+    m_shoulder.SetDefaultCommand(frc2::RunCommand(
+        [this] {
+            m_shoulder.GetArmPosition();
+        },
+        {&m_shoulder}
+    ));
+
+    m_elbow.SetDefaultCommand(frc2::RunCommand(
+        [this] {
+            m_elbow.GetArmPosition();
+        },
+        {&m_elbow}
+    ));    
+
+    
     /*m_arm.SetDefaultCommand(frc2::RunCommand(
         [this] {
             m_arm.getSetStates();
@@ -112,33 +127,31 @@ void RobotContainer::ConfigureButtonBindings() {
     frc2::POVButton(&m_driverController, 90).OnTrue(m_drive.setSlowFactor(0.5));
 
     //choose gamepiece
-   // m_driverController.LeftBumper().OnTrue(new frc2::InstantCommand([this] {m_arm.setCone(); }, {&m_arm}));
-  //  m_driverController.LeftBumper().OnTrue(new frc2::InstantCommand([this] {m_intake.setCone(); }, {&m_arm}));
+    m_driverController.LeftBumper().OnTrue(new frc2::InstantCommand([this] {Cube = false; }));
+    m_driverController.LeftBumper().OnTrue(new frc2::InstantCommand([this] {m_intake.setCone(); }, {&m_intake}));
 
-   // m_driverController.RightBumper().OnTrue(new frc2::InstantCommand([this] {m_arm.setCube(); }, {&m_arm}));
-   // m_driverController.RightBumper().OnTrue(new frc2::InstantCommand([this] {m_intake.setCube(); }, {&m_arm}));
+    m_driverController.RightBumper().OnTrue(new frc2::InstantCommand([this] {Cube = true; }));
+    m_driverController.RightBumper().OnTrue(new frc2::InstantCommand([this] {m_intake.setCube(); }, {&m_intake}));
 
      // Move the arm to 2 radians above horizontal when the 'A' button is pressed.
-  frc2::POVButton(&m_driverController, 270).OnTrue(frc2::cmd::RunOnce(
-      [this] {
-        m_elbow.SetGoal(-0.7_rad);
-        m_elbow.Enable();
-      },
-      {&m_elbow, &m_shoulder}));
 
-  frc2::POVButton(&m_driverController, 90).OnTrue(frc2::cmd::RunOnce(
-      [this] {
-        m_shoulder.SetGoal(-0.7_rad);
-        m_shoulder.Enable();
-      },
-      {&m_elbow, &m_shoulder}));
     
   m_driverController.A().OnTrue(frc2::cmd::RunOnce(
       [this] {
-        m_elbow.SetGoal(-0.7_rad);
-        m_elbow.Enable();
-        m_shoulder.SetGoal(-0.7_rad);
-        m_shoulder.Enable();
+        if(Cube = true){
+          m_elbow.SetGoal(units::radian_t{-21 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_elbow.Enable();
+          m_shoulder.SetGoal(units::radian_t{-0.7 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_shoulder.Enable();
+        }
+        else{
+          m_elbow.SetGoal(units::radian_t{-13 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_elbow.Enable();
+          m_shoulder.SetGoal(units::radian_t{0 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_shoulder.Enable();
+        }
+        
+        
       },
       {&m_elbow, &m_shoulder}));
 
@@ -146,16 +159,93 @@ void RobotContainer::ConfigureButtonBindings() {
  
   m_driverController.B().OnTrue(frc2::cmd::RunOnce(
       [this] {
-        m_elbow.SetGoal(0_rad);
-        m_elbow.Enable();
-        m_shoulder.SetGoal(0_rad);
-        m_shoulder.Enable();
+        if(Cube = true){ 
+          m_elbow.SetGoal(units::radian_t{-15 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_elbow.Enable();
+          m_shoulder.SetGoal(units::radian_t{-2.2 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_shoulder.Enable();
+        }
+        else{
+          m_elbow.SetGoal(units::radian_t{-18 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_elbow.Enable();
+          m_shoulder.SetGoal(units::radian_t{-6 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_shoulder.Enable();
+        }
         
       },
       {&m_elbow, &m_shoulder}));
-}
 
-   
+      m_driverController.Y().OnTrue(frc2::cmd::RunOnce(
+      [this] {
+        if(Cube = true){
+          m_elbow.SetGoal(units::radian_t{-26.5 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_elbow.Enable();
+          m_shoulder.SetGoal(units::radian_t{-9 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_shoulder.Enable();
+        }
+        else{
+          m_elbow.SetGoal(units::radian_t{-41.6 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_elbow.Enable();
+          m_shoulder.SetGoal(units::radian_t{-14.3 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_shoulder.Enable();
+        }
+        
+        
+      },
+      {&m_elbow, &m_shoulder}));
+
+
+      frc2::POVButton(&m_driverController, 0).OnTrue(frc2::cmd::RunOnce(
+      [this] {
+        if(Cube = true){
+          m_elbow.SetGoal(units::radian_t{-29 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_elbow.Enable();
+          m_shoulder.SetGoal(units::radian_t{0 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_shoulder.Enable();
+        }
+        else{
+          m_elbow.SetGoal(units::radian_t{-20 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_elbow.Enable();
+          m_shoulder.SetGoal(units::radian_t{0 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_shoulder.Enable();
+        }
+        
+        
+      },
+      {&m_elbow, &m_shoulder}));
+
+      frc2::POVButton(&m_driverController, 90).OnTrue(frc2::cmd::RunOnce(
+      [this] {
+        if(Cube = true){
+          m_elbow.SetGoal(units::radian_t{-7.7 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_elbow.Enable();
+          m_shoulder.SetGoal(units::radian_t{-0.9 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_shoulder.Enable();
+        }
+        else{
+          m_elbow.SetGoal(units::radian_t{-9.4 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_elbow.Enable();
+          m_shoulder.SetGoal(units::radian_t{-4.8 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_shoulder.Enable();
+        }
+        
+        
+      },
+      {&m_elbow, &m_shoulder}));
+
+      frc2::POVButton(&m_driverController, 180).OnTrue(frc2::cmd::RunOnce(
+      [this] {
+        if(Cube = true){
+          m_elbow.SetGoal(units::radian_t{-32.8 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_elbow.Enable();
+          m_shoulder.SetGoal(units::radian_t{12.6 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_shoulder.Enable();
+          }
+          
+      },
+      {&m_elbow, &m_shoulder}));
+
+}
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
     return m_chooser.GetSelected();
