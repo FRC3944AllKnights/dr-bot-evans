@@ -138,16 +138,16 @@ void RobotContainer::ConfigureButtonBindings() {
     
   m_driverController.A().OnTrue(frc2::cmd::RunOnce(
       [this] {
-        if(Cube = true){
+        if(Cube == true){
           m_elbow.SetGoal(units::radian_t{-21 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
           m_elbow.Enable();
           m_shoulder.SetGoal(units::radian_t{-0.7 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
           m_shoulder.Enable();
         }
         else{
-          m_elbow.SetGoal(units::radian_t{-13 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_elbow.SetGoal(units::radian_t{-1.4 });
           m_elbow.Enable();
-          m_shoulder.SetGoal(units::radian_t{0 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_shoulder.SetGoal(units::radian_t{0 });
           m_shoulder.Enable();
         }
         
@@ -159,7 +159,7 @@ void RobotContainer::ConfigureButtonBindings() {
  
   m_driverController.B().OnTrue(frc2::cmd::RunOnce(
       [this] {
-        if(Cube = true){ 
+        if(Cube == true){ 
           m_elbow.SetGoal(units::radian_t{-15 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
           m_elbow.Enable();
           m_shoulder.SetGoal(units::radian_t{-2.2 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
@@ -177,7 +177,7 @@ void RobotContainer::ConfigureButtonBindings() {
 
       m_driverController.Y().OnTrue(frc2::cmd::RunOnce(
       [this] {
-        if(Cube = true){
+        if(Cube == true){
           m_elbow.SetGoal(units::radian_t{-26.5 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
           m_elbow.Enable();
           m_shoulder.SetGoal(units::radian_t{-9 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
@@ -197,7 +197,7 @@ void RobotContainer::ConfigureButtonBindings() {
 
       frc2::POVButton(&m_driverController, 0).OnTrue(frc2::cmd::RunOnce(
       [this] {
-        if(Cube = true){
+        if(Cube == true){
           m_elbow.SetGoal(units::radian_t{-29 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
           m_elbow.Enable();
           m_shoulder.SetGoal(units::radian_t{0 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
@@ -214,9 +214,9 @@ void RobotContainer::ConfigureButtonBindings() {
       },
       {&m_elbow, &m_shoulder}));
 
-      frc2::POVButton(&m_driverController, 90).OnTrue(frc2::cmd::RunOnce(
+      frc2::POVButton(&m_driverController, 270).OnTrue(frc2::cmd::RunOnce(
       [this] {
-        if(Cube = true){
+        if(Cube == true){
           m_elbow.SetGoal(units::radian_t{-7.7 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
           m_elbow.Enable();
           m_shoulder.SetGoal(units::radian_t{-0.9 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
@@ -235,7 +235,7 @@ void RobotContainer::ConfigureButtonBindings() {
 
       frc2::POVButton(&m_driverController, 180).OnTrue(frc2::cmd::RunOnce(
       [this] {
-        if(Cube = true){
+        if(Cube == true){
           m_elbow.SetGoal(units::radian_t{-32.8 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
           m_elbow.Enable();
           m_shoulder.SetGoal(units::radian_t{12.6 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
@@ -245,6 +245,23 @@ void RobotContainer::ConfigureButtonBindings() {
       },
       {&m_elbow, &m_shoulder}));
 
+      frc2::POVButton(&m_driverController, 90).OnTrue(frc2::cmd::RunOnce(
+      [this] {
+        if(Cube == true){
+          m_elbow.SetGoal(units::radian_t{0 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_elbow.Enable();
+          m_shoulder.SetGoal(units::radian_t{0 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_shoulder.Enable();
+        }
+        else{
+          m_elbow.SetGoal(units::radian_t{0 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_elbow.Enable();
+          m_shoulder.SetGoal(units::radian_t{0 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
+          m_shoulder.Enable();
+        }
+
+      },
+      {&m_elbow, &m_shoulder}));
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
