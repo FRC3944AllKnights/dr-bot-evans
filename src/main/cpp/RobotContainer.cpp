@@ -15,6 +15,7 @@
 #include <frc2/command/button/JoystickButton.h>
 #include <units/angle.h>
 #include <units/velocity.h>
+#include <units/angular_velocity.h>
 #include <frc2/command/button/POVButton.h>
 
 #include <utility>
@@ -92,6 +93,8 @@ RobotContainer::RobotContainer() {
 void RobotContainer::initAllSubsystems() {
     //m_arm.init();
     m_intake.init();
+    m_elbow.SetLimits(3_rad_per_s, 10_rad / (1_s * 1_s));
+    m_shoulder.SetLimits(3_rad_per_s, 10_rad / (1_s * 1_s));
 }
 
 void RobotContainer::ConfigureButtonBindings() {
@@ -138,7 +141,8 @@ void RobotContainer::ConfigureButtonBindings() {
     
   m_driverController.A().OnTrue(frc2::cmd::RunOnce(
       [this] {
-        if(Cube == true){
+        if(Cube == true){ /*elbow gear ratio = 93.75
+                            shoulder gear ratio = 64 */
           m_elbow.SetGoal(units::radian_t{-21 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
           m_elbow.Enable();
           m_shoulder.SetGoal(units::radian_t{-0.7 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
@@ -257,11 +261,13 @@ void RobotContainer::ConfigureButtonBindings() {
           m_elbow.SetGoal(units::radian_t{0 / m_elbow.motorGearRatio * ( 2 * 3.1415926535 ) });
           m_elbow.Enable();
           m_shoulder.SetGoal(units::radian_t{0 / m_shoulder.motorGearRatio * ( 2 * 3.1415926535 ) });
-          m_shoulder.Enable();
+          m_shoulder.Enable(); 
         }
 
       },
       {&m_elbow, &m_shoulder}));
+
+  
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

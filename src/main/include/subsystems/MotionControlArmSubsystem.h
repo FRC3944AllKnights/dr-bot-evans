@@ -31,6 +31,11 @@ class MotionControlArmSubsystem : public frc2::ProfiledPIDSubsystem<units::radia
   void GetArmPosition();
 
   double motorGearRatio;
+
+  void SetLimits(units::angular_velocity::radians_per_second_t maxVelocity
+  , units::angular_acceleration::radians_per_second_squared_t maxAcceleration);
+  
+  
   
  private:
   rev::CANSparkMax motor;
