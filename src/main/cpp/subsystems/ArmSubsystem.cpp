@@ -46,20 +46,19 @@ void ArmSubsystem::setCube(){
 }
 
 void ArmSubsystem::setElbowFast(){
-    elbow_pidController.SetSmartMotionMaxVelocity(elbowMaxVel);
-    shoulder_pidController.SetSmartMotionMaxVelocity(1000);
-    elbow_pidController.SetSmartMotionMaxAccel(elbowMaxAcc);  
+    m_elbow.SetLimits(3_rad_per_s, 10_rad / (1_s * 1_s));
+    m_shoulder.SetLimits(1_rad_per_s, 10_rad / (1_s * 1_s)); 
 }
 
 void ArmSubsystem::setElbowSlow(){
-    elbow_pidController.SetSmartMotionMaxAccel(1500);
-    elbow_pidController.SetSmartMotionMaxVelocity(1000);
-    shoulder_pidController.SetSmartMotionMaxVelocity(shoulderMaxVel);
+    m_elbow.SetLimits(1_rad_per_s, 10_rad / (1_s * 1_s));
+    m_shoulder.SetLimits(3_rad_per_s, 10_rad / (1_s * 1_s));
 }
 
 void ArmSubsystem::moveArm(double s, double e){
-    shoulder_pidController.SetReference(s*shoulderGearRatio, rev::CANSparkMax::ControlType::kSmartMotion);
-    elbow_pidController.SetReference(e*elbowGearRatio, rev::CANSparkMax::ControlType::kSmartMotion);
+    m_shoulder.SerGoal(s);
+    m_elbow.SetGoal(e);
+    
 }
 
 frc2::CommandPtr ArmSubsystem::moveShoulderCommand(double s){
@@ -131,31 +130,31 @@ frc2::CommandPtr ArmSubsystem::homePosition(){
 
 
 frc2::CommandPtr ArmSubsystem::floorPickupPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(0.0, 75.0).Unwrap(), moveArmCommand(10.0, 111.5).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(0, -1.4).Unwrap(), moveArmCommand(-0.0687, -1.407).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 
 frc2::CommandPtr ArmSubsystem::chutePickupPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(29.0, 36.0).Unwrap(), moveArmCommand(0.0, 38.0).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(-0.589, -1.206).Unwrap(), moveArmCommand(-0.216, -1.005).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 
 frc2::CommandPtr ArmSubsystem::trayPickupPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(82.0, 130.0).Unwrap(), moveArmCommand(83.0, 165.0).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(-1.403, -2.788).Unwrap(), moveArmCommand(-0.883, -1.776).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 frc2::CommandPtr ArmSubsystem::bottomDropPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(0.0, 21.0).Unwrap(), moveArmCommand(0.0, 75.0).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(0.0, -1.340).Unwrap(), moveArmCommand(0.0, -1.943).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 
 frc2::CommandPtr ArmSubsystem::midDropPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(45.0, 61.0).Unwrap(), moveArmCommand(10.0, 41.0).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(-0.471, -0.630).Unwrap(), moveArmCommand(-0.088, -0.516).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 
 frc2::CommandPtr ArmSubsystem::highDropPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(96.0, 129.0).Unwrap(), moveArmCommand(60.0, 93.0).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(1.237, -2.198).Unwrap(), moveArmCommand(1.237, -2.198).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 
