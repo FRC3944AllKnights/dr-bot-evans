@@ -6,33 +6,17 @@ using namespace std;
 ArmSubsystem::ArmSubsystem() {}
 
 void ArmSubsystem::init(){
-    // set PID coefficients and smartmotion values of shoulder
-    shoulder_pidController.SetP(shoulderP);
-    shoulder_pidController.SetI(shoulderI);
-    shoulder_pidController.SetD(shoulderD);
-    shoulder_pidController.SetFF(shoulderFF);
-    shoulder_pidController.SetOutputRange(shoulderMinOutput, shoulderMaxOutput);
-    shoulder_pidController.SetSmartMotionMaxVelocity(shoulderMaxVel);
-    shoulder_pidController.SetSmartMotionMinOutputVelocity(shoulderMinVel);
-    shoulder_pidController.SetSmartMotionMaxAccel(shoulderMaxAcc);
-    shoulder_pidController.SetSmartMotionAllowedClosedLoopError(shoulderAllErr);
+    
 
     // set PID coefficients and smartmotion values of elbow
-    elbow_pidController.SetP(elbowP);
-    elbow_pidController.SetI(elbowI);
-    elbow_pidController.SetD(elbowD);
-    elbow_pidController.SetFF(elbowFF);
-    elbow_pidController.SetOutputRange(elbowMinOutput, elbowMaxOutput);
-    elbow_pidController.SetSmartMotionMaxVelocity(elbowMaxVel);
-    elbow_pidController.SetSmartMotionMinOutputVelocity(elbowMinVel);
-    elbow_pidController.SetSmartMotionMaxAccel(elbowMaxAcc);
-    elbow_pidController.SetSmartMotionAllowedClosedLoopError(elbowAllErr);
-
+    
     frc::SmartDashboard::PutNumber("Set Elbow Degrees", 0);
     frc::SmartDashboard::PutNumber("Set Shoulder Degrees", 0);
 
-    shoulder_pidController.SetIAccum(0.0);
-    elbow_pidController.SetIAccum(0.0);
+    
+
+    m_elbow.SetLimits(3_rad_per_s, 10_rad / (1_s * 1_s));
+    m_shoulder.SetLimits(3_rad_per_s, 10_rad / (1_s * 1_s));
 
     moveArm(0.0, 1.0);
 }
@@ -56,27 +40,19 @@ void ArmSubsystem::setElbowSlow(){
 }
 
 void ArmSubsystem::moveArm(double s, double e){
-    m_shoulder.SerGoal(s);
-    m_elbow.SetGoal(e);
+    m_shoulder.SetGoal(units::radian_t{s});
+    m_elbow.SetGoal(units::radian_t{e});
     
 }
 
-frc2::CommandPtr ArmSubsystem::moveShoulderCommand(double s){
-    return frc2::cmd::RunOnce([this, s] { this->shoulder_pidController.SetReference(s*shoulderGearRatio, rev::CANSparkMax::ControlType::kSmartMotion); }, {this});
-}
-
-frc2::CommandPtr ArmSubsystem::moveElbowCommand(double e){
-    return frc2::cmd::RunOnce([this, e] { this->elbow_pidController.SetReference(e*elbowGearRatio, rev::CANSparkMax::ControlType::kSmartMotion); }, {this});
-}
-
 frc2::CommandPtr ArmSubsystem::waitForElbowMove(double e){
-    return frc2::cmd::WaitUntil([this, e] { return (this->elbow_encoder.GetPosition()/this->elbowGearRatio < (e+10) 
-                        && this->elbow_encoder.GetPosition()/this->elbowGearRatio > (e-10)); });
+    return frc2::cmd::WaitUntil([this, e] { return (this->m_elbow.GetMeasurement().value() < (e+0.174533) 
+                        && this->m_elbow.GetMeasurement().value() > (e-0.174533)); });
 }
 
 frc2::CommandPtr ArmSubsystem::waitForShoulderMove(double s){
-    return frc2::cmd::WaitUntil([this, s] { return (this->shoulder_encoder.GetPosition()/this->shoulderGearRatio < (s+10) 
-                        && this->shoulder_encoder.GetPosition()/this->shoulderGearRatio > (s-10)); });
+    return frc2::cmd::WaitUntil([this, s] { return (this->m_shoulder.GetMeasurement().value() < (s+0.174533) 
+                        && this->m_shoulder.GetMeasurement().value() > (s-0.174533)); });
 }
 
 frc2::CommandPtr ArmSubsystem::moveShoulderFirst(double s, double e){
@@ -107,12 +83,12 @@ frc2::CommandPtr ArmSubsystem::moveArmCommand(double s, double e){
 }
 
 double ArmSubsystem::getElbowAngle(){
-    double encoder_position = elbow_encoder.GetPosition()/elbowGearRatio;
+    double encoder_position = this->m_elbow.GetMeasurement().value()/elbowGearRatio;
     return encoder_position;
 } 
 
 double ArmSubsystem::getShoulderAngle(){
-    double encoder_position = shoulder_encoder.GetPosition()/shoulderGearRatio;
+    double encoder_position = this->m_shoulder.GetMeasurement().value()/shoulderGearRatio;
     return encoder_position;
 } 
 

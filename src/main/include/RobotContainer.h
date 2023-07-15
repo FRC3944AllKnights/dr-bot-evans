@@ -45,16 +45,14 @@ class RobotContainer {
 
   // The robot's subsystems
   DriveSubsystem m_drive;
-  // ArmSubsystem m_arm;
+  ArmSubsystem m_arm;
   IntakeSubsystem m_intake;
-  MotionControlArmSubsystem m_elbow{2, 4, 0.2, 0, ArmConstants::elbowGearRatio};
-  MotionControlArmSubsystem m_shoulder{1, 6, 0.2, 0, ArmConstants::shoulderGearRatio};
   bool Cube = false;
 
 
-  //frc2::CommandPtr m_placeCone = autos::PlaceCone(&m_drive, &m_arm, &m_intake);
-  //frc2::CommandPtr m_placeConeAndDock = autos::PlaceConeAndDock(&m_drive, &m_arm, &m_intake);
-  //frc2::CommandPtr m_placeConeAndBalance = autos::PlaceConeAndBalance(&m_drive, &m_arm, &m_intake);
+  frc2::CommandPtr m_placeCone = autos::PlaceCone(&m_drive, &m_arm, &m_intake);
+  frc2::CommandPtr m_placeConeAndDock = autos::PlaceConeAndDock(&m_drive, &m_arm, &m_intake);
+  frc2::CommandPtr m_placeConeAndBalance = autos::PlaceConeAndBalance(&m_drive, &m_arm, &m_intake);
 
   // The chooser for the autonomous routines
   frc::SendableChooser<frc2::Command*> m_chooser;

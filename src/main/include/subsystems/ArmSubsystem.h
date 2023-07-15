@@ -9,7 +9,7 @@
 #include <frc2/command/ConditionalCommand.h>
 #include <frc/SmartDashboard/SmartDashboard.h>
 
-
+#include "MotionControlArmSubsystem.h"
 #include "Constants.h"
 
 class ArmSubsystem : public frc2::SubsystemBase {
@@ -67,16 +67,10 @@ class ArmSubsystem : public frc2::SubsystemBase {
       std::pair{CUBE, frc2::cmd::Print("Command two was selected!")});*/
 
     bool isConeMode = true;
-    double shoulderGearRatio = -64.0/360.0;
-    double elbowGearRatio = -25.0*60.0/16.0/360.0;
-    double desired_shoulder_angle = 0;
+
     double desired_elbow_angle = 0;
+    double desired_shoulder_angle = 0;
 
-    rev::CANSparkMax shoulder_motor{1, rev::CANSparkMax::MotorType::kBrushless};
-    rev::SparkMaxPIDController shoulder_pidController = shoulder_motor.GetPIDController();
-    rev::SparkMaxRelativeEncoder shoulder_encoder = shoulder_motor.GetEncoder();
-
-    rev::CANSparkMax elbow_motor{2, rev::CANSparkMax::MotorType::kBrushless};
-    rev::SparkMaxPIDController elbow_pidController = elbow_motor.GetPIDController();
-    rev::SparkMaxRelativeEncoder elbow_encoder = elbow_motor.GetEncoder();
+    MotionControlArmSubsystem m_elbow{2, 4, 0.2, 0, ArmConstants::elbowGearRatio};
+    MotionControlArmSubsystem m_shoulder{1, 6, 0.2, 0, ArmConstants::shoulderGearRatio};
 };
