@@ -8,6 +8,7 @@
 #include <numbers>
 
 #include <units/angle.h>
+#include <units/angular_acceleration.h>
 #include <units/angular_velocity.h>
 #include <units/time.h>
 #include <units/voltage.h>

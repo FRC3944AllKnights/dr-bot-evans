@@ -114,11 +114,10 @@ void RobotContainer::ConfigureButtonBindings() {
     frc2::POVButton(&m_driverController, 90).OnTrue(m_drive.setSlowFactor(0.5));
 
     //choose gamepiece
-    m_driverController.LeftBumper().OnTrue(new frc2::InstantCommand([this] {m_arm.setCone(); }, {&m_intake}));
-    m_driverController.LeftBumper().OnTrue(new frc2::InstantCommand([this] {m_arm.setCone(); }, {&m_intake}));
+    m_driverController.LeftBumper().OnTrue(new frc2::InstantCommand([this] {m_arm.setCone(); m_intake.setCone(); }, {&m_intake, &m_arm}));
 
-    m_driverController.RightBumper().OnTrue(new frc2::InstantCommand([this] {m_arm.setCube(); }, {&m_intake}));
-    m_driverController.RightBumper().OnTrue(new frc2::InstantCommand([this] {m_arm.setCube(); }, {&m_intake}));
+    m_driverController.RightBumper().OnTrue(new frc2::InstantCommand([this] {m_arm.setCube(); m_intake.setCone(); }, {&m_intake, &m_arm}));
+    
 
      // Move the arm to 2 radians above horizontal when the 'A' button is pressed.
 }

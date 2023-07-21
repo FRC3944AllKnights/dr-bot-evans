@@ -18,7 +18,7 @@ void ArmSubsystem::init(){
     m_elbow.SetLimits(3_rad_per_s, 10_rad / (1_s * 1_s));
     m_shoulder.SetLimits(3_rad_per_s, 10_rad / (1_s * 1_s));
 
-    moveArm(0.0, 1.0);
+    moveArm(0.0, 0.0);
 }
 
 void ArmSubsystem::setCone(){
@@ -40,9 +40,10 @@ void ArmSubsystem::setElbowSlow(){
 }
 
 void ArmSubsystem::moveArm(double s, double e){
-    m_shoulder.SetGoal(units::radian_t{s});
-    m_elbow.SetGoal(units::radian_t{e});
+    m_shoulder.SetGoal(units::angle::radian_t(s));
+    m_elbow.SetGoal(units::angle::radian_t(e));
     
+frc::SmartDashboard::PutString("success","failed");
 }
 
 frc2::CommandPtr ArmSubsystem::waitForElbowMove(double e){
@@ -95,6 +96,8 @@ double ArmSubsystem::getShoulderAngle(){
 void ArmSubsystem::getSetStates(){
     frc::SmartDashboard::PutNumber("Elbow Angle", getElbowAngle());
     frc::SmartDashboard::PutNumber("Shoulder Angle", getShoulderAngle());
+    m_elbow.GetArmPosition();
+    m_shoulder.GetArmPosition();
 
     desired_elbow_angle = frc::SmartDashboard::GetNumber("Set Elbow Degrees", 70.0);
     desired_shoulder_angle = frc::SmartDashboard::GetNumber("Set Shoulder Degrees", 0.0);
