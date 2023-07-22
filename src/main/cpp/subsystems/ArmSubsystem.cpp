@@ -42,6 +42,8 @@ void ArmSubsystem::setElbowSlow(){
 void ArmSubsystem::moveArm(double s, double e){
     m_shoulder.SetGoal(units::angle::radian_t(s));
     m_elbow.SetGoal(units::angle::radian_t(e));
+    m_elbow.Enable();
+    m_shoulder.Enable();
     
 frc::SmartDashboard::PutString("success","failed");
 }
@@ -104,7 +106,7 @@ void ArmSubsystem::getSetStates(){
 }
 
 frc2::CommandPtr ArmSubsystem::homePosition(){
-    return moveArmCommand(0.0, 3.0);
+    return moveArmCommand(0.0, 0.0);
 };
 
 
@@ -133,7 +135,7 @@ frc2::CommandPtr ArmSubsystem::midDropPosition(){
 };
 
 frc2::CommandPtr ArmSubsystem::highDropPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(1.237, -2.198).Unwrap(), moveArmCommand(1.237, -2.198).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(-1.237, -2.198).Unwrap(), moveArmCommand(-1.237, -2.198).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 
