@@ -120,9 +120,6 @@ double ArmSubsystem::getShoulderAngle(){
 void ArmSubsystem::getSetStates(){
     frc::SmartDashboard::PutNumber("Elbow Angle", getElbowAngle());
     frc::SmartDashboard::PutNumber("Shoulder Angle", getShoulderAngle());
-
-    desired_elbow_angle = frc::SmartDashboard::GetNumber("Set Elbow Degrees", 70.0);
-    desired_shoulder_angle = frc::SmartDashboard::GetNumber("Set Shoulder Degrees", 0.0);
 }
 
 frc2::CommandPtr ArmSubsystem::homePosition(){
@@ -131,7 +128,7 @@ frc2::CommandPtr ArmSubsystem::homePosition(){
 
 
 frc2::CommandPtr ArmSubsystem::floorPickupPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(0.0, 75.0).Unwrap(), moveArmCommand(10.0, 111.5).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(0.0, 73.0).Unwrap(), moveArmCommand(10.0, 111.5).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 
@@ -141,7 +138,7 @@ frc2::CommandPtr ArmSubsystem::chutePickupPosition(){
 };
 
 frc2::CommandPtr ArmSubsystem::trayPickupPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(82.0, 130.0).Unwrap(), moveArmCommand(83.0, 165.0).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(82.0, 128.0).Unwrap(), moveArmCommand(83.0, 165.0).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 frc2::CommandPtr ArmSubsystem::bottomDropPosition(){

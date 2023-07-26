@@ -32,9 +32,10 @@ RobotContainer::RobotContainer() {
   m_chooser.AddOption("place cone and dock", m_placeConeAndDock.get());
   m_chooser.AddOption("place cone and balance", m_placeConeAndBalance.get());
 
+  frc::SmartDashboard::PutData("auto modes", &m_chooser);
+
 
   // Put the chooser on the dashboard
-  frc::SmartDashboard::PutData(&m_chooser);
 
   // Configure the button bindings
   ConfigureButtonBindings();
@@ -66,12 +67,12 @@ RobotContainer::RobotContainer() {
       {&m_intake}
     ));
 
-    m_arm.SetDefaultCommand(frc2::RunCommand(
+    /*m_arm.SetDefaultCommand(frc2::RunCommand(
         [this] {
             m_arm.getSetStates();
         },
         {&m_arm}
-    ));
+    ));*/
 }
 
 void RobotContainer::initAllSubsystems() {
