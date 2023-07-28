@@ -13,7 +13,7 @@
 #include <units/time.h>
 #include <units/voltage.h>
 #include <frc/SmartDashboard/SmartDashboard.h>
-
+#include <frc/AnalogPotentiometer.h>
 
 
 /**
@@ -23,7 +23,7 @@ class MotionControlArmSubsystem : public frc2::ProfiledPIDSubsystem<units::radia
   using State = frc::TrapezoidProfile<units::radians>::State;
 
  public:
-  MotionControlArmSubsystem(int canID, double kP, double kI, double kD, double gearRatio);
+  MotionControlArmSubsystem(int canID, int potID, double potStart, double kP, double kI, double kD, double gearRatio);
 
   void UseOutput(double output, State setpoint) override;
 
@@ -42,7 +42,7 @@ class MotionControlArmSubsystem : public frc2::ProfiledPIDSubsystem<units::radia
   rev::CANSparkMax motor;
   rev::SparkMaxRelativeEncoder encoder = motor.GetEncoder();
   frc::ArmFeedforward m_feedforward;
-  
+  frc::AnalogPotentiometer pot;
   
 };
 

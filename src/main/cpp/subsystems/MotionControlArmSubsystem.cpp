@@ -6,11 +6,12 @@
 using namespace MotionArmConstants;
 using State = frc::TrapezoidProfile<units::radians>::State;
 
-MotionControlArmSubsystem::MotionControlArmSubsystem(int canID, double kP, double kI, double kD, double gearRatio)
+MotionControlArmSubsystem::MotionControlArmSubsystem(int canID, int potID, double potStart, double kP, double kI, double kD, double gearRatio)
     : frc2::ProfiledPIDSubsystem<units::radians>(frc::ProfiledPIDController<units::radians>(
               kP, kI, kD, {kMaxVelocity, kMaxAcceleration})),
       m_feedforward(kS, kG, kV, kA), 
-      motor(canID, rev::CANSparkMax::MotorType::kBrushless) {
+      motor(canID, rev::CANSparkMax::MotorType::kBrushless),
+      pot(potID, 4.712, potStart) {
   motorGearRatio = gearRatio;
   // Start arm in neutral position
   SetGoal(State{kArmOffset, 0_rad_per_s});
@@ -18,7 +19,7 @@ MotionControlArmSubsystem::MotionControlArmSubsystem(int canID, double kP, doubl
 
 void MotionControlArmSubsystem::GetArmPosition(){
   std::string id = std::to_string(motorGearRatio);
-  frc::SmartDashboard::PutNumber("motor " + id + " current position", encoder.GetPosition() / motorGearRatio * ( 2 * 3.1415926535 ));
+  frc::SmartDashboard::PutNumber("motor " + id + " current position", pot.Get() / motorGearRatio);
 }
 
 void MotionControlArmSubsystem::UseOutput(double output, State setpoint) {
@@ -30,7 +31,7 @@ void MotionControlArmSubsystem::UseOutput(double output, State setpoint) {
   // Add the feedforward to the PID output to get the motor output
   motor.SetVoltage(units::volt_t{output} + feedforward);
 
-}
+} 
 
 void MotionControlArmSubsystem::SetLimits(units::angular_velocity::radians_per_second_t maxVelocity
   , units::angular_acceleration::radians_per_second_squared_t maxAcceleration){
