@@ -32,6 +32,7 @@ class MotionControlArmSubsystem : public frc2::ProfiledPIDSubsystem<units::radia
   void GetArmPosition();
 
   double motorGearRatio;
+  double offset;
 
   void SetLimits(units::angular_velocity::radians_per_second_t maxVelocity
   , units::angular_acceleration::radians_per_second_squared_t maxAcceleration);
@@ -40,7 +41,6 @@ class MotionControlArmSubsystem : public frc2::ProfiledPIDSubsystem<units::radia
   
  private:
   rev::CANSparkMax motor;
-  rev::SparkMaxRelativeEncoder encoder = motor.GetEncoder();
   frc::ArmFeedforward m_feedforward;
   frc::AnalogPotentiometer pot;
   
@@ -65,7 +65,6 @@ constexpr auto kMaxAcceleration = 10_rad / (1_s * 1_s);
 
 // The offset of the arm from the horizontal in its neutral position,
 // measured from the horizontal
-constexpr auto kArmOffset = 0_rad;
 }  // namespace ArmConstants
 
 /*namespace AutoConstants {

@@ -18,7 +18,7 @@ void ArmSubsystem::init(){
     m_elbow.SetLimits(3_rad_per_s, 10_rad / (1_s * 1_s));
     m_shoulder.SetLimits(3_rad_per_s, 10_rad / (1_s * 1_s));
 
-    moveArm(0.0, 0.0);
+   // moveArm(0.0, 0.0);
 }
 
 void ArmSubsystem::setCone(){
@@ -111,31 +111,31 @@ frc2::CommandPtr ArmSubsystem::homePosition(){
 
 
 frc2::CommandPtr ArmSubsystem::floorPickupPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(0, -1.4).Unwrap(), moveArmCommand(-0.0687, -1.407).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(0.150869, -0.858344).Unwrap(), moveArmCommand(-0.054183, -1.346443).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 
 frc2::CommandPtr ArmSubsystem::chutePickupPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(-0.589, -1.206).Unwrap(), moveArmCommand(-0.216, -1.005).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(-0.578573, -0.835190).Unwrap(), moveArmCommand(-0.205178, -0.705008).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 
 frc2::CommandPtr ArmSubsystem::trayPickupPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(-1.403, -2.788).Unwrap(), moveArmCommand(-0.883, -1.776).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(-1.161652, -1.567668).Unwrap(), moveArmCommand(-1.161652, -1.567668).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 frc2::CommandPtr ArmSubsystem::bottomDropPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(0.0, -1.340).Unwrap(), moveArmCommand(0.0, -1.943).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(0.049005, -0.854902).Unwrap(), moveArmCommand(0.170994, -0.960380).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 
 frc2::CommandPtr ArmSubsystem::midDropPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(-0.471, -0.630).Unwrap(), moveArmCommand(-0.088, -0.516).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(-0.578573, -0.835190).Unwrap(), moveArmCommand(-0.205178, -0.705008 ).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 
 frc2::CommandPtr ArmSubsystem::highDropPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(-1.237, -2.198).Unwrap(), moveArmCommand(-1.237, -2.198).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(-1.270541, -1.653421).Unwrap(), moveArmCommand(-0.878306, -1.360709).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 

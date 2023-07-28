@@ -71,6 +71,6 @@ class ArmSubsystem : public frc2::SubsystemBase {
     double desired_elbow_angle = 0;
     double desired_shoulder_angle = 0;
 
-    MotionControlArmSubsystem m_elbow{2, 0, 0.0, 4, 0.2, 0, ArmConstants::elbowGearRatio};
-    MotionControlArmSubsystem m_shoulder{1, 1, 0.0, 6, 0.2, 0, ArmConstants::shoulderGearRatio};
+    MotionControlArmSubsystem m_elbow{2, 0, 4.571175, 4, 0.2, 0, ArmConstants::elbowGearRatio};
+    MotionControlArmSubsystem m_shoulder{1, 1, 4.525499, 6, 1.0, 0, ArmConstants::shoulderGearRatio};
 };

@@ -11,15 +11,16 @@ MotionControlArmSubsystem::MotionControlArmSubsystem(int canID, int potID, doubl
               kP, kI, kD, {kMaxVelocity, kMaxAcceleration})),
       m_feedforward(kS, kG, kV, kA), 
       motor(canID, rev::CANSparkMax::MotorType::kBrushless),
-      pot(potID, 4.712, potStart) {
+      pot(potID, 4.712, 0.0) {
   motorGearRatio = gearRatio;
   // Start arm in neutral position
-  SetGoal(State{kArmOffset, 0_rad_per_s});
+  SetGoal(State{0_rad, 0_rad_per_s});
+  offset = potStart;
 }
 
 void MotionControlArmSubsystem::GetArmPosition(){
   std::string id = std::to_string(motorGearRatio);
-  frc::SmartDashboard::PutNumber("motor " + id + " current position", pot.Get() / motorGearRatio);
+  frc::SmartDashboard::PutNumber("motor " + id + " current position", (-offset + pot.Get()));
 }
 
 void MotionControlArmSubsystem::UseOutput(double output, State setpoint) {
@@ -40,5 +41,5 @@ void MotionControlArmSubsystem::SetLimits(units::angular_velocity::radians_per_s
   }
 
 units::radian_t MotionControlArmSubsystem::GetMeasurement() {
-  return units::radian_t{encoder.GetPosition() / motorGearRatio * ( 2 * 3.1415926535 ) } + kArmOffset;
+  return units::radian_t{ (-offset + pot.Get())};
 }
