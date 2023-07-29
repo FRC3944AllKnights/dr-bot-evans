@@ -19,6 +19,7 @@ void ArmSubsystem::init(){
     m_shoulder.SetLimits(3_rad_per_s, 10_rad / (1_s * 1_s));
 
    // moveArm(0.0, 0.0);
+
 }
 
 void ArmSubsystem::setCone(){
@@ -31,11 +32,11 @@ void ArmSubsystem::setCube(){
 
 void ArmSubsystem::setElbowFast(){
     m_elbow.SetLimits(3_rad_per_s, 10_rad / (1_s * 1_s));
-    m_shoulder.SetLimits(1_rad_per_s, 10_rad / (1_s * 1_s)); 
+    m_shoulder.SetLimits(3_rad_per_s, 10_rad / (1_s * 1_s)); 
 }
 
 void ArmSubsystem::setElbowSlow(){
-    m_elbow.SetLimits(1_rad_per_s, 10_rad / (1_s * 1_s));
+    m_elbow.SetLimits(3_rad_per_s, 10_rad / (1_s * 1_s));
     m_shoulder.SetLimits(3_rad_per_s, 10_rad / (1_s * 1_s));
 }
 

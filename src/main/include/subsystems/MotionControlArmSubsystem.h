@@ -2,7 +2,6 @@
 
 #include <frc/Encoder.h>
 #include <frc/controller/ArmFeedforward.h>
-#include <frc/motorcontrol/PWMSparkMax.h>
 #include <frc2/command/ProfiledPIDSubsystem.h>
 
 #include <numbers>
@@ -14,6 +13,7 @@
 #include <units/voltage.h>
 #include <frc/SmartDashboard/SmartDashboard.h>
 #include <frc/AnalogPotentiometer.h>
+#include <rev/CANSparkMax.h>
 
 
 /**

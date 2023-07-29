@@ -11,7 +11,7 @@
 
 void Robot::RobotInit() {
   m_container.initAllSubsystems();
-  frc::CameraServer::StartAutomaticCapture();
+  //frc::CameraServer::StartAutomaticCapture();
 }
 
 /**
