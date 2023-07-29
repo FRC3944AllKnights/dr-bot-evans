@@ -31,10 +31,19 @@ void ArmSubsystem::init(){
     frc::SmartDashboard::PutNumber("Set Elbow Degrees", 0);
     frc::SmartDashboard::PutNumber("Set Shoulder Degrees", 0);
 
+    elbow_motor_offset = elbow_pot.Get() - elbow_pot_offset;
+    shoulder_motor_offset = shoulder_pot.Get() - shoulder_pot_offset;
+
+    frc::SmartDashboard::PutNumber("Elbow Offset", elbow_motor_offset);
+    frc::SmartDashboard::PutNumber("Soulder Offset", shoulder_motor_offset);
+
     shoulder_pidController.SetIAccum(0.0);
     elbow_pidController.SetIAccum(0.0);
 
-    moveArm(0.0, 1.0);
+    shoulder_encoder.SetPosition(0.0);
+    elbow_encoder.SetPosition(0.0);
+
+    moveArm(0.0, 0.0);
 }
 
 void ArmSubsystem::setCone(){
@@ -58,8 +67,8 @@ void ArmSubsystem::setElbowSlow(){
 }
 
 void ArmSubsystem::moveArm(double s, double e){
-    shoulder_pidController.SetReference(s*shoulderGearRatio, rev::CANSparkMax::ControlType::kSmartMotion);
-    elbow_pidController.SetReference(e*elbowGearRatio, rev::CANSparkMax::ControlType::kSmartMotion);
+    shoulder_pidController.SetReference((s + shoulder_motor_offset)*shoulderGearRatio, rev::CANSparkMax::ControlType::kSmartMotion);
+    elbow_pidController.SetReference((e + elbow_motor_offset)*elbowGearRatio, rev::CANSparkMax::ControlType::kSmartMotion);
 }
 
 frc2::CommandPtr ArmSubsystem::moveShoulderCommand(double s){

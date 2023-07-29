@@ -8,7 +8,7 @@
 #include <frc2/command/Commands.h>
 #include <frc2/command/ConditionalCommand.h>
 #include <frc/SmartDashboard/SmartDashboard.h>
-
+#include <frc/AnalogPotentiometer.h>
 
 #include "Constants.h"
 
@@ -79,4 +79,13 @@ class ArmSubsystem : public frc2::SubsystemBase {
     rev::CANSparkMax elbow_motor{2, rev::CANSparkMax::MotorType::kBrushless};
     rev::SparkMaxPIDController elbow_pidController = elbow_motor.GetPIDController();
     rev::SparkMaxRelativeEncoder elbow_encoder = elbow_motor.GetEncoder();
+
+    frc::AnalogPotentiometer elbow_pot{0, 375, 0};
+    frc::AnalogPotentiometer shoulder_pot{1, 270, 0};
+
+    double elbow_pot_offset = 362.968105;
+    double shoulder_pot_offset = 257.242106;
+
+    double elbow_motor_offset;
+    double shoulder_motor_offset;
 };
