@@ -7,6 +7,10 @@ ArmSubsystem::ArmSubsystem() {}
 
 void ArmSubsystem::init(){
     
+    m_shoulder.SetS(0.15);
+    m_shoulder.SetG(0.15);
+    m_shoulder.SetV(0.1);
+    m_shoulder.SetA(0.015);
 
     // set PID coefficients and smartmotion values of elbow
     

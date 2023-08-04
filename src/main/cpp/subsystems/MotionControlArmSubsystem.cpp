@@ -51,3 +51,23 @@ void MotionControlArmSubsystem::SetLimits(
 units::radian_t MotionControlArmSubsystem::GetMeasurement() {
   return units::radian_t{(-offset + pot.Get())};
 }
+
+void MotionControlArmSubsystem::SetS(double S){
+  kS = 1_V*S;
+  m_feedforward = frc::ArmFeedforward(kS, kG, kV, kA);
+}
+
+void MotionControlArmSubsystem::SetG(double G){
+  kG = 1_V*G;
+  m_feedforward = frc::ArmFeedforward(kS, kG, kV, kA);
+}
+
+void MotionControlArmSubsystem::SetV(double V){
+  kV = 1_V * V * 1_s / 1_rad;
+  m_feedforward = frc::ArmFeedforward(kS, kG, kV, kA);
+}
+
+void MotionControlArmSubsystem::SetA(double A){
+  kA = 1_V * A * 1_s * 1_s / 1_rad;
+  m_feedforward = frc::ArmFeedforward(kS, kG, kV, kA);
+}

@@ -36,8 +36,14 @@ class MotionControlArmSubsystem : public frc2::ProfiledPIDSubsystem<units::radia
 
   void SetLimits(units::angular_velocity::radians_per_second_t maxVelocity
   , units::angular_acceleration::radians_per_second_squared_t maxAcceleration);
-  
-  
+
+  void SetS(double S);
+
+  void SetG(double G);
+
+  void SetV(double V);
+
+  void SetA(double A);
   
  private:
   rev::CANSparkMax motor;
@@ -46,19 +52,19 @@ class MotionControlArmSubsystem : public frc2::ProfiledPIDSubsystem<units::radia
   
 };
 
+// These are fake gains; in actuality these must be determined individually for
+// each robot
+auto kS = 0.3_V;
+auto kG = 0.3_V;
+auto kV = 0.20_V * 1_s / 1_rad;
+auto kA = 0.03_V * 1_s * 1_s / 1_rad;
+
 namespace MotionArmConstants {
 constexpr int kMotorPort = 4;
 
 constexpr double kAp = 4;
 constexpr double kAi = 0.2;
 constexpr double kAd = 0;
-
-// These are fake gains; in actuality these must be determined individually for
-// each robot
-constexpr auto kS = 0.3_V;
-constexpr auto kG = 0.3_V;
-constexpr auto kV = 0.20_V * 1_s / 1_rad;
-constexpr auto kA = 0.03_V * 1_s * 1_s / 1_rad;
 
 constexpr auto kMaxVelocity = 3_rad_per_s;
 constexpr auto kMaxAcceleration = 10_rad / (1_s * 1_s);
