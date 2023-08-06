@@ -49,15 +49,20 @@ class MotionControlArmSubsystem : public frc2::ProfiledPIDSubsystem<units::radia
   rev::CANSparkMax motor;
   frc::ArmFeedforward m_feedforward;
   frc::AnalogPotentiometer pot;
+
+  double kS = 0.3;
+  double kG = 0.3;
+  double kV = 0.2;
+  double kA = 0.03;
   
 };
 
 // These are fake gains; in actuality these must be determined individually for
 // each robot
-auto kS = 0.3_V;
-auto kG = 0.3_V;
-auto kV = 0.20_V * 1_s / 1_rad;
-auto kA = 0.03_V * 1_s * 1_s / 1_rad;
+const auto kSConst = 1_V;
+const auto kGConst = 1_V;
+const auto kVConst = 1_V * 1_s / 1_rad;
+const auto kAConst = 1_V * 1_s * 1_s / 1_rad;
 
 namespace MotionArmConstants {
 constexpr int kMotorPort = 4;

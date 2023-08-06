@@ -13,7 +13,7 @@ MotionControlArmSubsystem::MotionControlArmSubsystem(int canID, int potID,
     : frc2::ProfiledPIDSubsystem<units::radians>(
           frc::ProfiledPIDController<units::radians>(
               kP, kI, kD, {kMaxVelocity, kMaxAcceleration})),
-      m_feedforward(kS, kG, kV, kA),
+      m_feedforward(kS*kSConst, kG*kGConst, kV*kVConst, kA*kAConst),
       motor(canID, rev::CANSparkMax::MotorType::kBrushless),
       pot(potID, 4.712, 0.0) {
   motorGearRatio = gearRatio;
@@ -53,21 +53,21 @@ units::radian_t MotionControlArmSubsystem::GetMeasurement() {
 }
 
 void MotionControlArmSubsystem::SetS(double S){
-  kS = 1_V*S;
-  m_feedforward = frc::ArmFeedforward(kS, kG, kV, kA);
+  kS = S;
+  m_feedforward = frc::ArmFeedforward(kS*kSConst, kG*kGConst, kV*kVConst, kA*kAConst);
 }
 
 void MotionControlArmSubsystem::SetG(double G){
-  kG = 1_V*G;
-  m_feedforward = frc::ArmFeedforward(kS, kG, kV, kA);
+  kG = G;
+  m_feedforward = frc::ArmFeedforward(kS*kSConst, kG*kGConst, kV*kVConst, kA*kAConst);
 }
 
 void MotionControlArmSubsystem::SetV(double V){
-  kV = 1_V * V * 1_s / 1_rad;
-  m_feedforward = frc::ArmFeedforward(kS, kG, kV, kA);
+  kV = V;
+  m_feedforward = frc::ArmFeedforward(kS*kSConst, kG*kGConst, kV*kVConst, kA*kAConst);
 }
 
 void MotionControlArmSubsystem::SetA(double A){
-  kA = 1_V * A * 1_s * 1_s / 1_rad;
-  m_feedforward = frc::ArmFeedforward(kS, kG, kV, kA);
+  kA = A;
+  m_feedforward = frc::ArmFeedforward(kS*kSConst, kG*kGConst, kV*kVConst, kA*kAConst);
 }
