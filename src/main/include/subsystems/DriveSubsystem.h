@@ -121,7 +121,7 @@ class DriveSubsystem : public frc2::SubsystemBase {
       frc::Translation2d{-DriveConstants::kWheelBase / 2,
                          -DriveConstants::kTrackWidth / 2}};
 
-    double slowFactor = 0.5;
+    double slowFactor = 0.6;
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be

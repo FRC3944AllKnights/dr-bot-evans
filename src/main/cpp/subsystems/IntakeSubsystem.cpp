@@ -7,7 +7,7 @@ void IntakeSubsystem::init(){
         intake_pidController.SetP(intakeP);
         intake_pidController.SetI(intakeI);
         intake_pidController.SetD(intakeD);
-        intake_pidController.SetFF(intakeFF);
+        intake_pidController.SetFF(intakeFF); 
         intake_pidController.SetIZone(intakeIZone);
         intake_pidController.SetOutputRange(intakeMinOutput, intakeMaxOutput);
 }
