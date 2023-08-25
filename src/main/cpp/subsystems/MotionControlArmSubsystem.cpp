@@ -15,7 +15,7 @@ MotionControlArmSubsystem::MotionControlArmSubsystem(int canID, int potID,
               kP, kI, kD, {kMaxVelocity, kMaxAcceleration})),
       m_feedforward(kS*kSConst, kG*kGConst, kV*kVConst, kA*kAConst),
       motor(canID, rev::CANSparkMax::MotorType::kBrushless),
-      pot(potID, 4.712, 0.0) {
+      pot(potID, 4.887, 0.0){
   motorGearRatio = gearRatio;
   // Start arm in neutral position
   SetGoal(State{0_rad, 0_rad_per_s});
@@ -26,7 +26,17 @@ void MotionControlArmSubsystem::GetArmPosition() {
   std::string id = std::to_string(motorGearRatio);
   frc::SmartDashboard::PutNumber("motor " + id + " current position",
                                  (-offset + pot.Get()));
+                                 
 }
+
+void MotionControlArmSubsystem::GetRawArmPosition() {
+  std::string id = std::to_string(motorGearRatio);
+  frc::SmartDashboard::PutNumber("motor " + id + "current position raw",
+                                 (pot.Get()));
+
+}
+
+
 
 void MotionControlArmSubsystem::UseOutput(double output, State setpoint) {
   // Calculate the feedforward from the sepoint

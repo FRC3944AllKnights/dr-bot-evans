@@ -30,6 +30,7 @@ class MotionControlArmSubsystem : public frc2::ProfiledPIDSubsystem<units::radia
   units::radian_t GetMeasurement() override;
 
   void GetArmPosition();
+  void GetRawArmPosition();
 
   double motorGearRatio;
   double offset;

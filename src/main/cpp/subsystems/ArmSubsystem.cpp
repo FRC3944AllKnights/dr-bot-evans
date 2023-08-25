@@ -105,6 +105,8 @@ void ArmSubsystem::getSetStates(){
     frc::SmartDashboard::PutNumber("Shoulder Angle", getShoulderAngle());
     m_elbow.GetArmPosition();
     m_shoulder.GetArmPosition();
+    m_elbow.GetRawArmPosition();
+    m_shoulder.GetRawArmPosition();
 
     desired_elbow_angle = frc::SmartDashboard::GetNumber("Set Elbow Degrees", 70.0);
     desired_shoulder_angle = frc::SmartDashboard::GetNumber("Set Shoulder Degrees", 0.0);
