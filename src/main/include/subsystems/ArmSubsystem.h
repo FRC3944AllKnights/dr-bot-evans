@@ -83,8 +83,8 @@ class ArmSubsystem : public frc2::SubsystemBase {
     frc::AnalogPotentiometer elbow_pot{0, 375, 0};
     frc::AnalogPotentiometer shoulder_pot{1, 270, 0};
 
-    double elbow_pot_offset = 362.968105;
-    double shoulder_pot_offset = 257.242106;
+    double elbow_pot_offset = 270.95088188;
+    double shoulder_pot_offset = 281.74156792;
 
     double elbow_motor_offset;
     double shoulder_motor_offset;
