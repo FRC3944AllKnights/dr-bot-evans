@@ -137,7 +137,7 @@ frc2::CommandPtr ArmSubsystem::homePosition(){
 
 
 frc2::CommandPtr ArmSubsystem::floorPickupPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(0.0, 73.0).Unwrap(), moveArmCommand(10.0, 111.5).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(0.0, 73.0).Unwrap(), moveArmCommand(10.0, 110).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 
@@ -147,7 +147,7 @@ frc2::CommandPtr ArmSubsystem::chutePickupPosition(){
 };
 
 frc2::CommandPtr ArmSubsystem::trayPickupPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(82.0, 128.0).Unwrap(), moveArmCommand(83.0, 165.0).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(82.0, 129.0).Unwrap(), moveArmCommand(83.0, 166.0).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 frc2::CommandPtr ArmSubsystem::bottomDropPosition(){
@@ -161,7 +161,7 @@ frc2::CommandPtr ArmSubsystem::midDropPosition(){
 };
 
 frc2::CommandPtr ArmSubsystem::highDropPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(96.0, 129.0).Unwrap(), moveArmCommand(60.0, 93.0).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(96.0, 132.0).Unwrap(), moveArmCommand(60.0, 93.0).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 

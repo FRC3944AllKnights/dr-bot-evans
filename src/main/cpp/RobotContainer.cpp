@@ -101,7 +101,7 @@ void RobotContainer::ConfigureButtonBindings() {
 
     //gamepiece pickup positions
     frc2::POVButton(&m_driverController, 0).OnTrue(m_arm.trayPickupPosition());
-    frc2::POVButton(&m_driverController, 0).OnTrue(m_drive.setSlowFactor(0.1));
+    frc2::POVButton(&m_driverController, 0).OnTrue(m_drive.setSlowFactor(0.15));
 
     frc2::POVButton(&m_driverController, 270).OnTrue(m_arm.chutePickupPosition());
     frc2::POVButton(&m_driverController, 270).OnTrue(m_drive.setSlowFactor(0.1));
@@ -110,7 +110,7 @@ void RobotContainer::ConfigureButtonBindings() {
     frc2::POVButton(&m_driverController, 180).OnTrue(m_drive.setSlowFactor(0.25));
 
     frc2::POVButton(&m_driverController, 90).OnTrue(m_arm.homePosition());
-    frc2::POVButton(&m_driverController, 90).OnTrue(m_drive.setSlowFactor(0.5));
+    frc2::POVButton(&m_driverController, 90).OnTrue(m_drive.setSlowFactor(0.6));
 
     //choose gamepiece
     m_driverController.LeftBumper().OnTrue(new frc2::InstantCommand([this] {m_arm.setCone(); }, {&m_arm}));
