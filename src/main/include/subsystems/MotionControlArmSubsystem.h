@@ -23,7 +23,7 @@ class MotionControlArmSubsystem : public frc2::ProfiledPIDSubsystem<units::radia
   using State = frc::TrapezoidProfile<units::radians>::State;
 
  public:
-  MotionControlArmSubsystem(int canID, int potID, double potStart, double kP, double kI, double kD, double gearRatio);
+  MotionControlArmSubsystem(int canID, int potID, double potStart, double kP, double kI, double kD, double gearRatio, double maxPotentiometerValue);
 
   void UseOutput(double output, State setpoint) override;
 

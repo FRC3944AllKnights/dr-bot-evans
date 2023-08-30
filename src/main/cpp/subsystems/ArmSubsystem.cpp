@@ -113,7 +113,7 @@ void ArmSubsystem::getSetStates(){
 }
 
 frc2::CommandPtr ArmSubsystem::homePosition(){
-    return moveArmCommand(0.0, 0.0);
+    return moveArmCommand(0.0, -0.16);
 };
 
 

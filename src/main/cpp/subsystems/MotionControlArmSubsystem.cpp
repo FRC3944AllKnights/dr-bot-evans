@@ -9,13 +9,14 @@ using State = frc::TrapezoidProfile<units::radians>::State;
 MotionControlArmSubsystem::MotionControlArmSubsystem(int canID, int potID,
                                                      double potStart, double kP,
                                                      double kI, double kD,
-                                                     double gearRatio)
+                                                     double gearRatio,
+                                                     double maxPotentiometerValue)
     : frc2::ProfiledPIDSubsystem<units::radians>(
           frc::ProfiledPIDController<units::radians>(
               kP, kI, kD, {kMaxVelocity, kMaxAcceleration})),
       m_feedforward(kS*kSConst, kG*kGConst, kV*kVConst, kA*kAConst),
       motor(canID, rev::CANSparkMax::MotorType::kBrushless),
-      pot(potID, 4.887, 0.0){
+      pot(potID, maxPotentiometerValue, 0.0){
   motorGearRatio = gearRatio;
   // Start arm in neutral position
   SetGoal(State{0_rad, 0_rad_per_s});
