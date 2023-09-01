@@ -181,9 +181,9 @@ void DriveSubsystem::autoBalance() {
   //extremely basic bang-bang controller that creeps forward or backward if charge station isn't level
   frc::SmartDashboard::PutNumber("gyro roll",GetRoll());
   if(GetRoll() > 8.0){
-    Drive(0.05_mps, 0_mps, 0_rad_per_s, false, false);
+    Drive(0.06_mps, 0_mps, 0_rad_per_s, false, false);
   }else if(GetRoll() < -8.0){
-    Drive(-0.05_mps, 0_mps, 0_rad_per_s, false, false);
+    Drive(-0.06_mps, 0_mps, 0_rad_per_s, false, false);
   }else{
     Drive(0_mps, 0_mps, 0_rad_per_s, false, false);
   }

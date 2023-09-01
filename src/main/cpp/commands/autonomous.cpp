@@ -106,7 +106,7 @@ frc2::CommandPtr autos::PlaceConeAndBalance(DriveSubsystem* drive, ArmSubsystem*
             // Reset odometry on command start
              [drive] { drive->ResetOdometry(frc::Pose2d{0_m, 0_m, 0_deg}); },
              // Drive while the command is executing
-             [drive] {drive->Drive(-0.2_mps, 0_mps, 0_rad_per_s, false, true);},
+             [drive] {drive->Drive(-0.25_mps, 0_mps, 0_rad_per_s, false, true);},
              // stop driving
              [drive](bool interrupted) {drive->Drive(0_mps, 0_mps, 0_rad_per_s, false, false);},
              //distance to drive

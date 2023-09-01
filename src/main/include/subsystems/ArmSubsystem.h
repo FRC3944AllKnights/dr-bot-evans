@@ -81,10 +81,10 @@ class ArmSubsystem : public frc2::SubsystemBase {
     rev::SparkMaxRelativeEncoder elbow_encoder = elbow_motor.GetEncoder();
 
     frc::AnalogPotentiometer elbow_pot{0, 375, 0};
-    frc::AnalogPotentiometer shoulder_pot{1, 270, 0};
+    frc::AnalogPotentiometer shoulder_pot{1, 280, 0};
 
-    double elbow_pot_offset = 270.95088188;
-    double shoulder_pot_offset = 281.74156792;
+    double elbow_pot_offset = 363.0;
+    double shoulder_pot_offset = 280.0;
 
     double elbow_motor_offset;
     double shoulder_motor_offset;
