@@ -31,8 +31,8 @@ constexpr units::meters_per_second_t kMaxSpeed = 4.8_mps;
 constexpr units::radians_per_second_t kMaxAngularSpeed{2 * std::numbers::pi};
 
 constexpr double kDirectionSlewRate = 0.25;   // radians per second
-constexpr double kMagnitudeSlewRate = 0.6;   // percent per second (1 = 100%)
-constexpr double kRotationalSlewRate = 0.5;  // percent per second (1 = 100%)
+constexpr double kMagnitudeSlewRate = 1;   // percent per second (1 = 100%)
+constexpr double kRotationalSlewRate = 1;  // percent per second (1 = 100%)
 
 // Chassis configuration
 constexpr units::meter_t kTrackWidth =

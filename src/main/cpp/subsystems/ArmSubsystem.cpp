@@ -156,7 +156,7 @@ frc2::CommandPtr ArmSubsystem::bottomDropPosition(){
 };
 
 frc2::CommandPtr ArmSubsystem::midDropPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(45.0, 61.0).Unwrap(), moveArmCommand(10.0, 41.0).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(47.0, 61.0).Unwrap(), moveArmCommand(10.0, 41.0).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 
