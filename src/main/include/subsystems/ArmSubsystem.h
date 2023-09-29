@@ -15,7 +15,7 @@
 class ArmSubsystem : public frc2::SubsystemBase {
 
 
- public: 
+ public:
   ArmSubsystem();
 
   /**

@@ -17,6 +17,9 @@ void ArmSubsystem::init(){
     shoulder_pidController.SetSmartMotionMaxAccel(shoulderMaxAcc);
     shoulder_pidController.SetSmartMotionAllowedClosedLoopError(shoulderAllErr);
 
+    shoulder_motor.EnableSoftLimit(rev::CANSparkMax::SoftLimitDirection::kReverse, true);
+    shoulder_motor.SetSoftLimit(rev::CANSparkMax::SoftLimitDirection::kReverse,(40*-shoulderGearRatio));
+
     // set PID coefficients and smartmotion values of elbow
     elbow_pidController.SetP(elbowP);
     elbow_pidController.SetI(elbowI);
