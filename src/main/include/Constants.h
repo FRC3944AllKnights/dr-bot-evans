@@ -31,7 +31,7 @@ constexpr units::meters_per_second_t kMaxSpeed = 4.8_mps;
 constexpr units::radians_per_second_t kMaxAngularSpeed{2 * std::numbers::pi};
 
 constexpr double kDirectionSlewRate = 0.25;   // radians per second
-constexpr double kMagnitudeSlewRate = 1;   // percent per second (1 = 100%)
+constexpr double kMagnitudeSlewRate = 0.5;   // percent per second (1 = 100%)
 constexpr double kRotationalSlewRate = 1;  // percent per second (1 = 100%)
 
 // Chassis configuration
@@ -143,7 +143,7 @@ constexpr double kDriveDeadband = 0.05;
 namespace ArmConstants {
 //shoulder pid constants
 constexpr double shoulderP = 7.5e-5;
-constexpr double shoulderI = 5e-7;
+constexpr double shoulderI = 7.5e-7;
 constexpr double shoulderD = 0;
 constexpr double shoulderFF = 0.000156;
 constexpr double shoulderMinOutput = -1;

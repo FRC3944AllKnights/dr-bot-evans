@@ -6,6 +6,7 @@ using namespace std;
 ArmSubsystem::ArmSubsystem() {}
 
 void ArmSubsystem::init(){
+    shoulder_motor.Set(-.1);
     // set PID coefficients and smartmotion values of shoulder
     shoulder_pidController.SetP(shoulderP);
     shoulder_pidController.SetI(shoulderI);
@@ -18,7 +19,7 @@ void ArmSubsystem::init(){
     shoulder_pidController.SetSmartMotionAllowedClosedLoopError(shoulderAllErr);
 
     shoulder_motor.EnableSoftLimit(rev::CANSparkMax::SoftLimitDirection::kReverse, true);
-    shoulder_motor.SetSoftLimit(rev::CANSparkMax::SoftLimitDirection::kReverse,(40*-shoulderGearRatio));
+    shoulder_motor.SetSoftLimit(rev::CANSparkMax::SoftLimitDirection::kReverse,(100*shoulderGearRatio));
 
     // set PID coefficients and smartmotion values of elbow
     elbow_pidController.SetP(elbowP);
@@ -34,6 +35,7 @@ void ArmSubsystem::init(){
     frc::SmartDashboard::PutNumber("Set Elbow Degrees", 0);
     frc::SmartDashboard::PutNumber("Set Shoulder Degrees", 0);
 
+    //sets elbow and shoulder values based on potentiometers
     elbow_motor_offset = elbow_pot.Get() - elbow_pot_offset;
     shoulder_motor_offset = shoulder_pot.Get() - shoulder_pot_offset;
 
@@ -150,7 +152,7 @@ frc2::CommandPtr ArmSubsystem::chutePickupPosition(){
 };
 
 frc2::CommandPtr ArmSubsystem::trayPickupPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(82.0, 130.0).Unwrap(), moveArmCommand(82.0, 131.0).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(83.4, 130.0).Unwrap(), moveArmCommand(83, 131.0).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 frc2::CommandPtr ArmSubsystem::bottomDropPosition(){
@@ -159,12 +161,12 @@ frc2::CommandPtr ArmSubsystem::bottomDropPosition(){
 };
 
 frc2::CommandPtr ArmSubsystem::midDropPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(47.0, 61.0).Unwrap(), moveArmCommand(10.0, 41.0).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(48, 61.0).Unwrap(), moveArmCommand(13.0, 40.0).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 
 frc2::CommandPtr ArmSubsystem::highDropPosition(){
-    return frc2::ConditionalCommand(moveArmCommand(96.0, 132.0).Unwrap(), moveArmCommand(60.0, 93.0).Unwrap(),
+    return frc2::ConditionalCommand(moveArmCommand(95.0, 132.0).Unwrap(), moveArmCommand(60.0, 93.0).Unwrap(),
             [this] {return this->isConeMode;} ).ToPtr();
 };
 
